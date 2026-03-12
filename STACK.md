@@ -10,7 +10,7 @@
 
 ## Why This Stack
 
-This project is a Warcraft 3-inspired fortress survival / hero defense game, and the main challenge is gameplay systems rather than high-end graphics.
+This project is a defensive survival strategy game built around fortress defense, hero intervention, wave pressure, and light economy management. The main challenge is gameplay systems rather than high-end graphics.
 
 Godot 4 with GDScript is the chosen stack because:
 
@@ -25,6 +25,7 @@ Godot 4 with GDScript is the chosen stack because:
 - Use TileMap for map layout and building footprint logic
 - Use Godot UI (`Control` nodes) for HUD, menus, and build panels
 - Use resource files (`.tres`) for unit, building, wave, and item data
+- Treat the fortress as the mechanical center of the run
 - Keep multiplayer out of scope until single-player is fun
 
 ## AI-Friendly Development Rules
@@ -49,4 +50,4 @@ Godot 4 with GDScript is the chosen stack because:
 
 `Survive it` will use `Godot 4 + GDScript + 2D top-down`.
 
-This is the preferred choice for fast prototyping, modular gameplay systems, and AI-assisted iteration.
+This is the preferred choice for fast prototyping, modular gameplay systems, fortress-centered survival design, and AI-assisted iteration.

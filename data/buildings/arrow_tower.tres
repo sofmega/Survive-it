@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="BuildingDef" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://data/buildings/building_def.gd" id="1_b1"]
+[ext_resource type="PackedScene" path="res://scenes/buildings/tower.tscn" id="2_b2"]
+
+[resource]
+script = ExtResource("1_b1")
+id = &"arrow_tower"
+display_name = "Arrow Tower"
+description = "Basic defensive tower for the first playable loop."
+scene = ExtResource("2_b2")
+build_cost = 40
+footprint_size = Vector2i(1, 1)
+build_radius_limit = 280.0
+blocks_path = true
+max_health = 60.0
+attack_damage = 8.0
+attack_range = 200.0
+attack_cooldown = 0.8
+

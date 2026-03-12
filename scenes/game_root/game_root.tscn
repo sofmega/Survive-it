@@ -1,0 +1,62 @@
+[gd_scene load_steps=12 format=3]
+
+[ext_resource type="Script" path="res://scripts/core/game_root/game_root.gd" id="1_root"]
+[ext_resource type="PackedScene" path="res://scenes/world/map_view.tscn" id="2_map"]
+[ext_resource type="PackedScene" path="res://scenes/world/fortress.tscn" id="3_fortress"]
+[ext_resource type="PackedScene" path="res://scenes/units/hero.tscn" id="4_hero"]
+[ext_resource type="PackedScene" path="res://scenes/units/builder.tscn" id="5_builder"]
+[ext_resource type="PackedScene" path="res://scenes/ui/hud.tscn" id="6_hud"]
+[ext_resource type="Script" path="res://scripts/systems/run_director.gd" id="7_run"]
+[ext_resource type="Script" path="res://scripts/systems/wave_director.gd" id="8_wave"]
+[ext_resource type="Script" path="res://scripts/systems/spawn_director.gd" id="9_spawn"]
+[ext_resource type="Script" path="res://scripts/systems/build_system.gd" id="10_build"]
+[ext_resource type="Script" path="res://scripts/systems/economy_system.gd" id="11_economy"]
+[ext_resource type="Script" path="res://scripts/systems/combat_system.gd" id="12_combat"]
+
+[node name="GameRoot" type="Node2D"]
+script = ExtResource("1_root")
+
+[node name="Map" parent="." instance=ExtResource("2_map")]
+
+[node name="World" type="Node2D" parent="."]
+
+[node name="Fortress" parent="World" instance=ExtResource("3_fortress")]
+position = Vector2(800, 450)
+
+[node name="Hero" parent="World" instance=ExtResource("4_hero")]
+
+[node name="Builder" parent="World" instance=ExtResource("5_builder")]
+
+[node name="Enemies" type="Node2D" parent="World"]
+
+[node name="Structures" type="Node2D" parent="World"]
+
+[node name="Projectiles" type="Node2D" parent="World"]
+
+[node name="FX" type="Node2D" parent="World"]
+
+[node name="Directors" type="Node" parent="."]
+
+[node name="RunDirector" type="Node" parent="Directors"]
+script = ExtResource("7_run")
+
+[node name="WaveDirector" type="Node" parent="Directors"]
+script = ExtResource("8_wave")
+
+[node name="SpawnDirector" type="Node" parent="Directors"]
+script = ExtResource("9_spawn")
+
+[node name="BuildSystem" type="Node" parent="Directors"]
+script = ExtResource("10_build")
+
+[node name="EconomySystem" type="Node" parent="Directors"]
+script = ExtResource("11_economy")
+
+[node name="CombatSystem" type="Node" parent="Directors"]
+script = ExtResource("12_combat")
+
+[node name="UI" type="Node" parent="."]
+
+[node name="HUD" parent="UI" instance=ExtResource("6_hud")]
+
+[node name="Debug" type="Node2D" parent="."]

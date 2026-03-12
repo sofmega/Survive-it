@@ -1,6 +1,6 @@
 # Survive it
 
-`Survive it` is a Godot 4 top-down fortress survival prototype inspired by Warcraft 3 custom games.
+`Survive it` is a Godot 4 top-down defensive survival strategy prototype built around a fortress-centered survival loop.
 
 ## Stack
 
@@ -10,12 +10,14 @@
 
 ## Current Scaffold
 
-- Godot project configuration
-- Main entry scene
-- Basic world scene
-- Movable hero prototype
-- Starter wave manager
-- Planning docs
+- Fortress-centered match scene
+- Central fortress with HP and lose condition
+- 60-second preparation phase
+- One basic enemy wave and spawn path
+- Builder with basic tower placement
+- Hero with basic support combat
+- Gold rewards and basic HUD
+- Planning and AI guidance docs
 
 ## Open The Project
 
@@ -28,8 +30,15 @@
 
 Build one playable loop:
 
-- move the hero
-- survive timed enemy waves
-- place a few structures
-- earn and spend resources
+- survive one readable defensive run
+- defend the central fortress
+- place at least one basic tower during the prep phase
+- earn and spend gold
+- use the hero to support weak points
+
+## Prototype Controls
+
+- `WASD`: move the currently controlled unit
+- `Tab`: switch between hero and builder
+- `Space`: place the builder's selected tower during build phase
 

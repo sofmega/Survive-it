@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="EnemyDef" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://data/enemies/enemy_def.gd" id="1_e1"]
+[ext_resource type="PackedScene" path="res://scenes/units/enemy.tscn" id="2_e2"]
+
+[resource]
+script = ExtResource("1_e1")
+id = &"runner_enemy"
+display_name = "Runner"
+description = "Fast basic attacker for the first wave."
+scene = ExtResource("2_e2")
+max_health = 24.0
+move_speed = 72.0
+contact_damage = 8.0
+attack_range = 30.0
+attack_cooldown = 1.0
+gold_reward = 6
+

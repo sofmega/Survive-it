@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/units/hero.gd" id="1_hero"]
+[ext_resource type="Resource" path="res://data/heroes/default_hero.tres" id="2_hero"]
+
+[node name="Hero" type="Node2D"]
+position = Vector2(720, 520)
+script = ExtResource("1_hero")
+hero_def = ExtResource("2_hero")
