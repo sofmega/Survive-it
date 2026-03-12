@@ -22,7 +22,6 @@
 1. Install Godot 4.
 2. Open Godot.
 3. Import this folder:
-   `C:\Users\Verdiner\Desktop\Survive it`
 4. Run the project.
 
 ## First Development Goal
