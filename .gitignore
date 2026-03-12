@@ -1,4 +1,4 @@
 .godot/
+tools/
 export_presets.cfg
 *.translation
-

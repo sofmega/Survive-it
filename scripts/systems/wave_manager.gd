@@ -2,8 +2,8 @@ extends Node
 
 const WAVE_INTERVAL := 12.0
 
-var elapsed := 0.0
-var current_wave := 1
+var elapsed: float = 0.0
+var current_wave: int = 1
 
 
 func _process(delta: float) -> void:
@@ -15,5 +15,5 @@ func _process(delta: float) -> void:
 
 
 func get_wave_status() -> String:
-	var remaining := max(WAVE_INTERVAL - elapsed, 0.0)
+	var remaining: float = maxf(WAVE_INTERVAL - elapsed, 0.0)
 	return "Wave %d | next in %.1fs" % [current_wave, remaining]
