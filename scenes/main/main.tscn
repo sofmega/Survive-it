@@ -1,0 +1,29 @@
+[gd_scene load_steps=3 format=3 uid="uid://c1h2nx3m3b5jd"]
+
+[ext_resource type="Script" path="res://scripts/main/main.gd" id="1_u1l0s"]
+[ext_resource type="PackedScene" path="res://scenes/world/world.tscn" id="2_6m56d"]
+
+[node name="Main" type="Node2D"]
+script = ExtResource("1_u1l0s")
+
+[node name="World" parent="." instance=ExtResource("2_6m56d")]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer"]
+offset_left = 24.0
+offset_top = 24.0
+offset_right = 420.0
+offset_bottom = 180.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/MarginContainer"]
+
+[node name="TitleLabel" type="Label" parent="CanvasLayer/MarginContainer/VBoxContainer"]
+text = "Survive it"
+
+[node name="StatusLabel" type="Label" parent="CanvasLayer/MarginContainer/VBoxContainer"]
+text = "Loading..."
+
+[node name="HintLabel" type="Label" parent="CanvasLayer/MarginContainer/VBoxContainer"]
+text = "Move with WASD or arrow keys"
+

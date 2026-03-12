@@ -1,0 +1,16 @@
+[gd_scene load_steps=4 format=3 uid="uid://d1s7x0e7v73r5"]
+
+[ext_resource type="Script" path="res://scripts/world/world.gd" id="1_g8m0n"]
+[ext_resource type="Script" path="res://scripts/units/hero.gd" id="2_j6x3v"]
+[ext_resource type="Script" path="res://scripts/systems/wave_manager.gd" id="3_94h1y"]
+
+[node name="World" type="Node2D"]
+script = ExtResource("1_g8m0n")
+
+[node name="Hero" type="Node2D" parent="."]
+position = Vector2(800, 450)
+script = ExtResource("2_j6x3v")
+
+[node name="WaveManager" type="Node" parent="."]
+script = ExtResource("3_94h1y")
+
