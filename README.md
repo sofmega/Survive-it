@@ -38,7 +38,10 @@ Build one playable loop:
 
 ## Prototype Controls
 
-- `WASD`: move the currently controlled unit
-- `Tab`: switch between hero and builder
-- `Space`: place the builder's selected tower during build phase
+- Mouse-driven RTS controls are the target input model
+- Left click: select hero, builder, or structures
+- Right click: issue movement or interaction commands
+- Build panel button: enter tower placement mode with the builder selected
+- Left click while in build mode: place the selected tower
+- Right click while in build mode: cancel placement
 

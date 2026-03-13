@@ -5,16 +5,17 @@
 
 [resource]
 script = ExtResource("1_e1")
-id = &"runner_enemy"
-display_name = "Runner"
-description = "Fast basic attacker for the first wave."
+id = &"brute_enemy"
+display_name = "Brute"
+description = "Slow armored attacker that soaks tower fire."
 scene = ExtResource("2_e2")
-max_health = 24.0
-move_speed = 72.0
-contact_damage = 8.0
+max_health = 72.0
+move_speed = 42.0
+contact_damage = 14.0
 attack_range = 30.0
-attack_cooldown = 1.0
-gold_reward = 6
+attack_cooldown = 1.2
+gold_reward = 10
 preferred_target = &"fortress"
-radius = 16.0
-tint = Color(0.83, 0.29, 0.27, 1)
+radius = 20.0
+tint = Color(0.62, 0.45, 0.28, 1)
+

@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="EnemyDef" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://data/enemies/enemy_def.gd" id="1_e1"]
+[ext_resource type="PackedScene" path="res://scenes/units/enemy.tscn" id="2_e2"]
+
+[resource]
+script = ExtResource("1_e1")
+id = &"siege_enemy"
+display_name = "Siege Engine"
+description = "Prioritizes defenses before the fortress and deals heavy damage."
+scene = ExtResource("2_e2")
+max_health = 88.0
+move_speed = 34.0
+contact_damage = 20.0
+attack_range = 36.0
+attack_cooldown = 1.4
+gold_reward = 14
+preferred_target = &"structures"
+radius = 22.0
+tint = Color(0.88, 0.53, 0.18, 1)
+

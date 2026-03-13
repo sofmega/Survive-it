@@ -22,18 +22,38 @@ text = "Phase"
 [node name="FortressLabel" type="Label" parent="MarginContainer/VBoxContainer"]
 text = "Fortress"
 
+[node name="FortressTierLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+text = "Fortress tier"
+
 [node name="GoldLabel" type="Label" parent="MarginContainer/VBoxContainer"]
 text = "Gold"
 
 [node name="WaveLabel" type="Label" parent="MarginContainer/VBoxContainer"]
 text = "Wave"
 
+[node name="UpcomingLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+text = "Upcoming"
+
+[node name="ThreatPreviewLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+text = "Threat preview"
+
+[node name="AlertLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+text = "Alert"
+
 [node name="SelectedUnitLabel" type="Label" parent="MarginContainer/VBoxContainer"]
 text = "Selected unit"
+
+[node name="BuildModeLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+text = "Build mode"
+
+[node name="BuildFeedbackLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+text = "Build feedback"
+
+[node name="EconomyActionsLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+text = "Economy actions"
 
 [node name="HintLabel" type="Label" parent="MarginContainer/VBoxContainer"]
 text = "Hints"
 
 [node name="OutcomeLabel" type="Label" parent="MarginContainer/VBoxContainer"]
 text = ""
-

@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="FortressTierDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/fortress/fortress_tier_def.gd" id="1_f1"]
+
+[resource]
+script = ExtResource("1_f1")
+id = &"fortress_tier_2"
+display_name = "Fortress II"
+description = "Upgraded fortress with stronger support for nearby defenses."
+tier_index = 2
+max_health = 360.0
+armor = 0.0
+upgrade_cost = 0
+repair_amount = 60.0
+repair_cost = 28
+tower_damage_bonus = 0.2

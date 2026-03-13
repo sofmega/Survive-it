@@ -3,9 +3,12 @@ extends Node
 signal wave_started(wave_number: int)
 signal wave_finished(wave_number: int, reward_duration: float)
 signal wave_progress_changed(active_enemies: int)
+signal elite_spawned(alert_text: String)
 
 const WAVES = [
 	preload("res://data/waves/wave_01_basic.tres"),
+	preload("res://data/waves/wave_02_pressure.tres"),
+	preload("res://data/waves/wave_03_siege.tres"),
 ]
 
 var spawn_director: Node = null
@@ -52,6 +55,13 @@ func _on_enemy_spawned(enemy: Node) -> void:
 	active_enemies += 1
 	wave_progress_changed.emit(active_enemies)
 
+	var spawned_def = enemy.get("enemy_def")
+	if spawned_def != null and spawned_def.is_elite:
+		var alert_text: String = spawned_def.alert_text
+		if alert_text.is_empty():
+			alert_text = "%s has entered the battlefield" % spawned_def.display_name
+		elite_spawned.emit(alert_text)
+
 	if enemy.has_signal("died"):
 		enemy.died.connect(_on_enemy_died)
 
@@ -82,3 +92,18 @@ func get_current_wave_number() -> int:
 		return 0
 
 	return current_wave.wave_number
+
+
+func get_next_wave_number() -> int:
+	if has_more_waves():
+		return WAVES[current_wave_index + 1].wave_number
+
+	return 0
+
+
+func get_next_wave_preview_text() -> String:
+	if has_more_waves():
+		var next_wave = WAVES[current_wave_index + 1]
+		return "%s: %s" % [next_wave.display_name, next_wave.description]
+
+	return "No further waves scheduled"

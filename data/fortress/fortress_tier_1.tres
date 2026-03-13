@@ -7,6 +7,10 @@ script = ExtResource("1_f1")
 id = &"fortress_tier_1"
 display_name = "Fortress"
 description = "Central objective for the first playable loop."
+tier_index = 1
 max_health = 250.0
 armor = 0.0
-
+upgrade_cost = 140
+repair_amount = 40.0
+repair_cost = 20
+tower_damage_bonus = 0.0

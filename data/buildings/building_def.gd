@@ -15,4 +15,7 @@ extends Resource
 @export var attack_damage: float = 6.0
 @export var attack_range: float = 180.0
 @export var attack_cooldown: float = 0.8
-
+@export var aura_radius: float = 0.0
+@export var utility_power: float = 0.0
+@export var role: StringName = &"damage"
+@export var tint: Color = Color(0.48, 0.41, 0.22)

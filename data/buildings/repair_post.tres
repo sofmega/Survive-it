@@ -5,19 +5,20 @@
 
 [resource]
 script = ExtResource("1_b1")
-id = &"arrow_tower"
-display_name = "Arrow Tower"
-description = "Basic defensive tower for the first playable loop."
+id = &"repair_post"
+display_name = "Repair Post"
+description = "Support structure that repairs the fortress and nearby defenses."
 scene = ExtResource("2_b2")
-build_cost = 40
+build_cost = 65
 footprint_size = Vector2i(1, 1)
 build_radius_limit = 280.0
-blocks_path = true
-max_health = 60.0
-attack_damage = 8.0
-attack_range = 200.0
-attack_cooldown = 0.8
-aura_radius = 0.0
-utility_power = 0.0
-role = &"damage"
-tint = Color(0.48, 0.41, 0.22, 1)
+blocks_path = false
+max_health = 70.0
+attack_damage = 0.0
+attack_range = 0.0
+attack_cooldown = 1.0
+aura_radius = 190.0
+utility_power = 6.0
+role = &"repair"
+tint = Color(0.27, 0.69, 0.41, 1)
+

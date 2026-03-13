@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="EnemyDef" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://data/enemies/enemy_def.gd" id="1_e1"]
+[ext_resource type="PackedScene" path="res://scenes/units/enemy.tscn" id="2_e2"]
+
+[resource]
+script = ExtResource("1_e1")
+id = &"elite_siege_enemy"
+display_name = "Siege Captain"
+description = "Elite siege commander that unleashes a shock pulse against clustered defenses."
+scene = ExtResource("2_e2")
+max_health = 150.0
+move_speed = 36.0
+contact_damage = 24.0
+attack_range = 40.0
+attack_cooldown = 1.5
+gold_reward = 24
+preferred_target = &"structures"
+is_elite = true
+alert_text = "Elite threat: Siege Captain pulse incoming"
+special_attack_cooldown = 4.5
+special_attack_damage = 14.0
+special_attack_radius = 150.0
+radius = 26.0
+tint = Color(0.96, 0.4, 0.24, 1)

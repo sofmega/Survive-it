@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3]
+[gd_scene load_steps=15 format=3]
 
 [ext_resource type="Script" path="res://scripts/core/game_root/game_root.gd" id="1_root"]
 [ext_resource type="PackedScene" path="res://scenes/world/map_view.tscn" id="2_map"]
@@ -12,6 +12,8 @@
 [ext_resource type="Script" path="res://scripts/systems/build_system.gd" id="10_build"]
 [ext_resource type="Script" path="res://scripts/systems/economy_system.gd" id="11_economy"]
 [ext_resource type="Script" path="res://scripts/systems/combat_system.gd" id="12_combat"]
+[ext_resource type="Script" path="res://scripts/ui/placement_preview.gd" id="13_preview"]
+[ext_resource type="Script" path="res://scripts/ui/command_marker.gd" id="14_marker"]
 
 [node name="GameRoot" type="Node2D"]
 script = ExtResource("1_root")
@@ -59,4 +61,41 @@ script = ExtResource("12_combat")
 
 [node name="HUD" parent="UI" instance=ExtResource("6_hud")]
 
+[node name="BuildPanel" type="CanvasLayer" parent="UI"]
+
+[node name="MarginContainer" type="MarginContainer" parent="UI/BuildPanel"]
+offset_left = 1270.0
+offset_top = 20.0
+offset_right = 1580.0
+offset_bottom = 140.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/BuildPanel/MarginContainer"]
+
+[node name="ArrowTowerButton" type="Button" parent="UI/BuildPanel/MarginContainer/VBoxContainer"]
+text = "Build Arrow Tower"
+
+[node name="SlowBeaconButton" type="Button" parent="UI/BuildPanel/MarginContainer/VBoxContainer"]
+text = "Build Slow Beacon"
+
+[node name="RepairPostButton" type="Button" parent="UI/BuildPanel/MarginContainer/VBoxContainer"]
+text = "Build Repair Post"
+
+[node name="CommandBannerButton" type="Button" parent="UI/BuildPanel/MarginContainer/VBoxContainer"]
+text = "Build Command Banner"
+
+[node name="RepairFortressButton" type="Button" parent="UI/BuildPanel/MarginContainer/VBoxContainer"]
+text = "Repair Fortress"
+
+[node name="UpgradeFortressButton" type="Button" parent="UI/BuildPanel/MarginContainer/VBoxContainer"]
+text = "Upgrade Fortress"
+
+[node name="CostLabel" type="Label" parent="UI/BuildPanel/MarginContainer/VBoxContainer"]
+text = "Arrow Tower Cost"
+
 [node name="Debug" type="Node2D" parent="."]
+
+[node name="PlacementPreview" type="Node2D" parent="Debug"]
+script = ExtResource("13_preview")
+
+[node name="CommandMarker" type="Node2D" parent="Debug"]
+script = ExtResource("14_marker")

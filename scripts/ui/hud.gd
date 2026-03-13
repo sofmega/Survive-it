@@ -9,9 +9,16 @@ var game_root: Node = null
 @onready var title_label: Label = $MarginContainer/VBoxContainer/TitleLabel
 @onready var phase_label: Label = $MarginContainer/VBoxContainer/PhaseLabel
 @onready var fortress_label: Label = $MarginContainer/VBoxContainer/FortressLabel
+@onready var fortress_tier_label: Label = $MarginContainer/VBoxContainer/FortressTierLabel
 @onready var gold_label: Label = $MarginContainer/VBoxContainer/GoldLabel
 @onready var wave_label: Label = $MarginContainer/VBoxContainer/WaveLabel
+@onready var upcoming_label: Label = $MarginContainer/VBoxContainer/UpcomingLabel
+@onready var threat_preview_label: Label = $MarginContainer/VBoxContainer/ThreatPreviewLabel
+@onready var alert_label: Label = $MarginContainer/VBoxContainer/AlertLabel
 @onready var selected_unit_label: Label = $MarginContainer/VBoxContainer/SelectedUnitLabel
+@onready var build_mode_label: Label = $MarginContainer/VBoxContainer/BuildModeLabel
+@onready var build_feedback_label: Label = $MarginContainer/VBoxContainer/BuildFeedbackLabel
+@onready var economy_actions_label: Label = $MarginContainer/VBoxContainer/EconomyActionsLabel
 @onready var hint_label: Label = $MarginContainer/VBoxContainer/HintLabel
 @onready var outcome_label: Label = $MarginContainer/VBoxContainer/OutcomeLabel
 
@@ -31,10 +38,17 @@ func _process(_delta: float) -> void:
 	title_label.text = "Survive it"
 	phase_label.text = "Phase: %s | Timer: %.0fs" % [run_director.get_phase_label(), run_director.get_time_remaining()]
 	fortress_label.text = "Fortress HP: %.0f / %.0f" % [fortress.current_health, fortress.max_health]
+	fortress_tier_label.text = "Fortress Tier: %d" % fortress.get_tier_index()
 	gold_label.text = "Gold: %d" % economy_system.current_gold
 	wave_label.text = "Wave: %d | Active enemies: %d" % [wave_director.get_current_wave_number(), wave_director.active_enemies]
-	selected_unit_label.text = "Controlled unit: %s" % game_root.get_controlled_unit_label()
-	hint_label.text = "TAB switch unit | Move with WASD | Builder: SPACE place tower"
+	upcoming_label.text = game_root.get_upcoming_status_label()
+	threat_preview_label.text = game_root.get_upcoming_preview_label()
+	alert_label.text = game_root.get_alert_label()
+	selected_unit_label.text = "Selected: %s" % game_root.get_selected_unit_label()
+	build_mode_label.text = game_root.get_build_mode_label()
+	build_feedback_label.text = game_root.get_build_feedback_label()
+	economy_actions_label.text = game_root.get_economy_actions_label()
+	hint_label.text = game_root.get_hint_label()
 
 
 func _on_run_lost(reason: String) -> void:
@@ -43,4 +57,3 @@ func _on_run_lost(reason: String) -> void:
 
 func _on_run_won() -> void:
 	outcome_label.text = "Victory: You survived the first defensive run."
-

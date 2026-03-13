@@ -5,19 +5,19 @@
 
 [resource]
 script = ExtResource("1_b1")
-id = &"arrow_tower"
-display_name = "Arrow Tower"
-description = "Basic defensive tower for the first playable loop."
+id = &"command_banner"
+display_name = "Command Banner"
+description = "Support structure that boosts nearby damage towers without replacing them."
 scene = ExtResource("2_b2")
-build_cost = 40
+build_cost = 75
 footprint_size = Vector2i(1, 1)
 build_radius_limit = 280.0
-blocks_path = true
-max_health = 60.0
-attack_damage = 8.0
-attack_range = 200.0
-attack_cooldown = 0.8
-aura_radius = 0.0
-utility_power = 0.0
-role = &"damage"
-tint = Color(0.48, 0.41, 0.22, 1)
+blocks_path = false
+max_health = 55.0
+attack_damage = 0.0
+attack_range = 0.0
+attack_cooldown = 1.1
+aura_radius = 180.0
+utility_power = 0.35
+role = &"boost"
+tint = Color(0.76, 0.46, 0.2, 1)

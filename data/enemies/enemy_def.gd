@@ -12,4 +12,11 @@ extends Resource
 @export var attack_range: float = 32.0
 @export var attack_cooldown: float = 1.0
 @export var gold_reward: int = 5
-
+@export var preferred_target: StringName = &"fortress"
+@export var is_elite: bool = false
+@export var alert_text: String = ""
+@export var special_attack_cooldown: float = 0.0
+@export var special_attack_damage: float = 0.0
+@export var special_attack_radius: float = 0.0
+@export var radius: float = 16.0
+@export var tint: Color = Color(0.83, 0.29, 0.27)

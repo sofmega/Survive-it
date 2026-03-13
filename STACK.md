@@ -24,6 +24,7 @@ Godot 4 with GDScript is the chosen stack because:
 - Start in 2D, not 3D
 - Use TileMap for map layout and building footprint logic
 - Use Godot UI (`Control` nodes) for HUD, menus, and build panels
+- Use mouse-driven RTS-style controls rather than direct WASD character control
 - Use resource files (`.tres`) for unit, building, wave, and item data
 - Treat the fortress as the mechanical center of the run
 - Keep multiplayer out of scope until single-player is fun

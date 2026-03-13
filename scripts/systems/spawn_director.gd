@@ -5,6 +5,7 @@ signal wave_spawn_completed
 
 var enemies_root: Node2D = null
 var fortress: Node2D = null
+var structures_root: Node2D = null
 var combat_system: Node = null
 var spawn_points: Dictionary = {}
 
@@ -13,9 +14,10 @@ var elapsed: float = 0.0
 var spawning: bool = false
 
 
-func setup(next_enemies_root: Node2D, next_fortress: Node2D, next_combat_system: Node, next_spawn_points: Dictionary) -> void:
+func setup(next_enemies_root: Node2D, next_fortress: Node2D, next_structures_root: Node2D, next_combat_system: Node, next_spawn_points: Dictionary) -> void:
 	enemies_root = next_enemies_root
 	fortress = next_fortress
+	structures_root = next_structures_root
 	combat_system = next_combat_system
 	spawn_points = next_spawn_points
 
@@ -66,7 +68,7 @@ func _spawn_enemy(entry) -> void:
 	enemy.global_position = spawn_points.get(entry.spawn_point_id, Vector2(96, 450))
 
 	if enemy.has_method("setup"):
-		enemy.setup(entry.enemy, fortress, combat_system)
+		enemy.setup(entry.enemy, fortress, structures_root, combat_system)
 
 	enemies_root.add_child(enemy)
 	enemy_spawned.emit(enemy)
