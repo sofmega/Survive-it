@@ -1,59 +1,170 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene load_steps=5 format=3]
 
 [ext_resource type="Script" path="res://scripts/ui/hud.gd" id="1_hud"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_header"]
+bg_color = Color(0.08, 0.11, 0.12, 0.9)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.77, 0.64, 0.34, 0.9)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+shadow_color = Color(0, 0, 0, 0.35)
+shadow_size = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel"]
+bg_color = Color(0.05, 0.08, 0.09, 0.84)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.34, 0.45, 0.47, 0.85)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+shadow_color = Color(0, 0, 0, 0.28)
+shadow_size = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_alert"]
+bg_color = Color(0.18, 0.12, 0.07, 0.92)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.95, 0.67, 0.22, 0.92)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
 
 [node name="HUD" type="CanvasLayer"]
 script = ExtResource("1_hud")
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
-offset_left = 20.0
-offset_top = 20.0
-offset_right = 520.0
-offset_bottom = 280.0
+[node name="HeaderPanel" type="PanelContainer" parent="."]
+offset_left = 22.0
+offset_top = 18.0
+offset_right = 430.0
+offset_bottom = 98.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_header")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="HeaderPanel"]
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 12
 
-[node name="TitleLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="HeaderPanel/MarginContainer"]
+
+[node name="TitleLabel" type="Label" parent="HeaderPanel/MarginContainer/VBoxContainer"]
 text = "Survive it"
 
-[node name="PhaseLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+[node name="PhaseLabel" type="Label" parent="HeaderPanel/MarginContainer/VBoxContainer"]
 text = "Phase"
 
-[node name="FortressLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+[node name="StatusPanel" type="PanelContainer" parent="."]
+offset_left = 22.0
+offset_top = 112.0
+offset_right = 356.0
+offset_bottom = 262.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
+
+[node name="MarginContainer" type="MarginContainer" parent="StatusPanel"]
+theme_override_constants/margin_left = 14
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 14
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="StatusPanel/MarginContainer"]
+
+[node name="SectionLabel" type="Label" parent="StatusPanel/MarginContainer/VBoxContainer"]
+text = "Fortress Status"
+
+[node name="FortressLabel" type="Label" parent="StatusPanel/MarginContainer/VBoxContainer"]
 text = "Fortress"
 
-[node name="FortressTierLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+[node name="FortressTierLabel" type="Label" parent="StatusPanel/MarginContainer/VBoxContainer"]
 text = "Fortress tier"
 
-[node name="GoldLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+[node name="GoldLabel" type="Label" parent="StatusPanel/MarginContainer/VBoxContainer"]
 text = "Gold"
 
-[node name="WaveLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+[node name="WaveLabel" type="Label" parent="StatusPanel/MarginContainer/VBoxContainer"]
 text = "Wave"
 
-[node name="UpcomingLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+[node name="IntelPanel" type="PanelContainer" parent="."]
+offset_left = 372.0
+offset_top = 112.0
+offset_right = 806.0
+offset_bottom = 262.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
+
+[node name="MarginContainer" type="MarginContainer" parent="IntelPanel"]
+theme_override_constants/margin_left = 14
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 14
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="IntelPanel/MarginContainer"]
+
+[node name="SectionLabel" type="Label" parent="IntelPanel/MarginContainer/VBoxContainer"]
+text = "Battlefield Intel"
+
+[node name="UpcomingLabel" type="Label" parent="IntelPanel/MarginContainer/VBoxContainer"]
 text = "Upcoming"
 
-[node name="ThreatPreviewLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+[node name="ThreatPreviewLabel" type="Label" parent="IntelPanel/MarginContainer/VBoxContainer"]
 text = "Threat preview"
 
-[node name="AlertLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+[node name="AlertPanel" type="PanelContainer" parent="IntelPanel/MarginContainer/VBoxContainer"]
+theme_override_styles/panel = SubResource("StyleBoxFlat_alert")
+
+[node name="MarginContainer" type="MarginContainer" parent="IntelPanel/MarginContainer/VBoxContainer/AlertPanel"]
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 8
+
+[node name="AlertLabel" type="Label" parent="IntelPanel/MarginContainer/VBoxContainer/AlertPanel/MarginContainer"]
 text = "Alert"
 
-[node name="SelectedUnitLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+[node name="ControlPanel" type="PanelContainer" parent="."]
+offset_left = 22.0
+offset_top = 278.0
+offset_right = 518.0
+offset_bottom = 520.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
+
+[node name="MarginContainer" type="MarginContainer" parent="ControlPanel"]
+theme_override_constants/margin_left = 14
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 14
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ControlPanel/MarginContainer"]
+
+[node name="SectionLabel" type="Label" parent="ControlPanel/MarginContainer/VBoxContainer"]
+text = "Command Readout"
+
+[node name="SelectedUnitLabel" type="Label" parent="ControlPanel/MarginContainer/VBoxContainer"]
 text = "Selected unit"
 
-[node name="BuildModeLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+[node name="BuildModeLabel" type="Label" parent="ControlPanel/MarginContainer/VBoxContainer"]
 text = "Build mode"
 
-[node name="BuildFeedbackLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+[node name="BuildFeedbackLabel" type="Label" parent="ControlPanel/MarginContainer/VBoxContainer"]
 text = "Build feedback"
 
-[node name="EconomyActionsLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+[node name="EconomyActionsLabel" type="Label" parent="ControlPanel/MarginContainer/VBoxContainer"]
 text = "Economy actions"
 
-[node name="HintLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+[node name="HintLabel" type="Label" parent="ControlPanel/MarginContainer/VBoxContainer"]
 text = "Hints"
+autowrap_mode = 3
 
-[node name="OutcomeLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+[node name="OutcomeLabel" type="Label" parent="ControlPanel/MarginContainer/VBoxContainer"]
 text = ""

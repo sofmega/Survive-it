@@ -15,6 +15,20 @@
 [ext_resource type="Script" path="res://scripts/ui/placement_preview.gd" id="13_preview"]
 [ext_resource type="Script" path="res://scripts/ui/command_marker.gd" id="14_marker"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_build_panel"]
+bg_color = Color(0.08, 0.11, 0.12, 0.92)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.72, 0.6, 0.34, 0.9)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+shadow_color = Color(0, 0, 0, 0.35)
+shadow_size = 8
+
 [node name="GameRoot" type="Node2D"]
 script = ExtResource("1_root")
 
@@ -63,34 +77,51 @@ script = ExtResource("12_combat")
 
 [node name="BuildPanel" type="CanvasLayer" parent="UI"]
 
-[node name="MarginContainer" type="MarginContainer" parent="UI/BuildPanel"]
-offset_left = 1270.0
-offset_top = 20.0
-offset_right = 1580.0
-offset_bottom = 140.0
+[node name="CommandDeck" type="PanelContainer" parent="UI/BuildPanel"]
+offset_left = 1238.0
+offset_top = 18.0
+offset_right = 1582.0
+offset_bottom = 360.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_build_panel")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="UI/BuildPanel/MarginContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="UI/BuildPanel/CommandDeck"]
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
 
-[node name="ArrowTowerButton" type="Button" parent="UI/BuildPanel/MarginContainer/VBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/BuildPanel/CommandDeck/MarginContainer"]
+
+[node name="TitleLabel" type="Label" parent="UI/BuildPanel/CommandDeck/MarginContainer/VBoxContainer"]
+text = "Command Deck"
+
+[node name="SubLabel" type="Label" parent="UI/BuildPanel/CommandDeck/MarginContainer/VBoxContainer"]
+text = "Builder structures and fortress actions"
+
+[node name="ArrowTowerButton" type="Button" parent="UI/BuildPanel/CommandDeck/MarginContainer/VBoxContainer"]
 text = "Build Arrow Tower"
 
-[node name="SlowBeaconButton" type="Button" parent="UI/BuildPanel/MarginContainer/VBoxContainer"]
+[node name="SlowBeaconButton" type="Button" parent="UI/BuildPanel/CommandDeck/MarginContainer/VBoxContainer"]
 text = "Build Slow Beacon"
 
-[node name="RepairPostButton" type="Button" parent="UI/BuildPanel/MarginContainer/VBoxContainer"]
+[node name="RepairPostButton" type="Button" parent="UI/BuildPanel/CommandDeck/MarginContainer/VBoxContainer"]
 text = "Build Repair Post"
 
-[node name="CommandBannerButton" type="Button" parent="UI/BuildPanel/MarginContainer/VBoxContainer"]
+[node name="CommandBannerButton" type="Button" parent="UI/BuildPanel/CommandDeck/MarginContainer/VBoxContainer"]
 text = "Build Command Banner"
 
-[node name="RepairFortressButton" type="Button" parent="UI/BuildPanel/MarginContainer/VBoxContainer"]
+[node name="RepairFortressButton" type="Button" parent="UI/BuildPanel/CommandDeck/MarginContainer/VBoxContainer"]
 text = "Repair Fortress"
 
-[node name="UpgradeFortressButton" type="Button" parent="UI/BuildPanel/MarginContainer/VBoxContainer"]
+[node name="UpgradeFortressButton" type="Button" parent="UI/BuildPanel/CommandDeck/MarginContainer/VBoxContainer"]
 text = "Upgrade Fortress"
 
-[node name="CostLabel" type="Label" parent="UI/BuildPanel/MarginContainer/VBoxContainer"]
+[node name="CostLabel" type="Label" parent="UI/BuildPanel/CommandDeck/MarginContainer/VBoxContainer"]
 text = "Arrow Tower Cost"
+
+[node name="HintLabel" type="Label" parent="UI/BuildPanel/CommandDeck/MarginContainer/VBoxContainer"]
+text = "Select the builder, choose a structure, then place it inside the fortress zone."
+autowrap_mode = 3
 
 [node name="Debug" type="Node2D" parent="."]
 

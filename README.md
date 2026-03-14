@@ -13,10 +13,11 @@
 - Fortress-centered match scene
 - Central fortress with HP and lose condition
 - 60-second preparation phase
-- One basic enemy wave and spawn path
-- Builder with basic tower placement
-- Hero with basic support combat
-- Gold rewards and basic HUD
+- Three defensive waves plus an elite siege threat
+- Builder with RTS-style building placement
+- Hero with support combat and tower synergy
+- Fortress repair and upgrade loop
+- Multiple building roles and readable prototype UI
 - Planning and AI guidance docs
 
 ## Open The Project
