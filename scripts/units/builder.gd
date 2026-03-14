@@ -21,6 +21,14 @@ func clear_move_target() -> void:
 	has_move_target = false
 
 
+func has_active_move_target() -> bool:
+	return has_move_target
+
+
+func get_move_target() -> Vector2:
+	return move_target
+
+
 func get_selected_building_name() -> String:
 	if selected_building_def == null:
 		return "None"

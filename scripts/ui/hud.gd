@@ -21,6 +21,9 @@ var game_root: Node = null
 @onready var economy_actions_label: Label = $ControlPanel/MarginContainer/VBoxContainer/EconomyActionsLabel
 @onready var hint_label: Label = $ControlPanel/MarginContainer/VBoxContainer/HintLabel
 @onready var outcome_label: Label = $ControlPanel/MarginContainer/VBoxContainer/OutcomeLabel
+@onready var outcome_overlay: CenterContainer = $OutcomeOverlay
+@onready var outcome_title_label: Label = $OutcomeOverlay/PanelContainer/MarginContainer/VBoxContainer/OutcomeTitleLabel
+@onready var outcome_detail_label: Label = $OutcomeOverlay/PanelContainer/MarginContainer/VBoxContainer/OutcomeDetailLabel
 
 
 func setup(next_run_director: Node, next_wave_director: Node, next_economy_system: Node, next_fortress: Node2D, next_game_root: Node) -> void:
@@ -32,6 +35,7 @@ func setup(next_run_director: Node, next_wave_director: Node, next_economy_syste
 
 	run_director.run_lost.connect(_on_run_lost)
 	run_director.run_won.connect(_on_run_won)
+	outcome_overlay.visible = false
 
 
 func _process(_delta: float) -> void:
@@ -53,7 +57,13 @@ func _process(_delta: float) -> void:
 
 func _on_run_lost(reason: String) -> void:
 	outcome_label.text = "Defeat: %s" % reason
+	outcome_title_label.text = "Fortress Lost"
+	outcome_detail_label.text = reason
+	outcome_overlay.visible = true
 
 
 func _on_run_won() -> void:
 	outcome_label.text = "Victory: You survived the first defensive run."
+	outcome_title_label.text = "Victory"
+	outcome_detail_label.text = "The fortress held through the final wave."
+	outcome_overlay.visible = true

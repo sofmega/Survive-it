@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3]
+[gd_scene load_steps=16 format=3]
 
 [ext_resource type="Script" path="res://scripts/core/game_root/game_root.gd" id="1_root"]
 [ext_resource type="PackedScene" path="res://scenes/world/map_view.tscn" id="2_map"]
@@ -14,6 +14,7 @@
 [ext_resource type="Script" path="res://scripts/systems/combat_system.gd" id="12_combat"]
 [ext_resource type="Script" path="res://scripts/ui/placement_preview.gd" id="13_preview"]
 [ext_resource type="Script" path="res://scripts/ui/command_marker.gd" id="14_marker"]
+[ext_resource type="Script" path="res://scripts/ui/selection_feedback.gd" id="15_selection"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_build_panel"]
 bg_color = Color(0.08, 0.11, 0.12, 0.92)
@@ -130,3 +131,6 @@ script = ExtResource("13_preview")
 
 [node name="CommandMarker" type="Node2D" parent="Debug"]
 script = ExtResource("14_marker")
+
+[node name="SelectionFeedback" type="Node2D" parent="Debug"]
+script = ExtResource("15_selection")

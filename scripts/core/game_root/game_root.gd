@@ -33,6 +33,7 @@ const BUILDING_OPTIONS := [
 @onready var build_cost_label: Label = $UI/BuildPanel/CommandDeck/MarginContainer/VBoxContainer/CostLabel
 @onready var placement_preview: Node2D = $Debug/PlacementPreview
 @onready var command_marker: Node2D = $Debug/CommandMarker
+@onready var selection_feedback: Node2D = $Debug/SelectionFeedback
 
 var selected_unit: Node2D = null
 var is_build_mode_active: bool = false
@@ -84,6 +85,7 @@ func _process(delta: float) -> void:
 	alert_time_remaining = maxf(alert_time_remaining - delta, 0.0)
 	if alert_time_remaining <= 0.0 and not alert_text.is_empty():
 		alert_text = ""
+	_update_selection_feedback()
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -107,7 +109,7 @@ func _handle_left_click(world_position: Vector2) -> void:
 			is_build_mode_active = false
 			build_feedback_text = "Tower placed"
 			build_system.clear_preview()
-			command_marker.show_marker(world_position, Color(0.36, 0.92, 0.48, 0.9))
+			command_marker.show_marker(world_position, Color(0.36, 0.92, 0.48, 0.9), &"build")
 		return
 
 	var clicked_selection: Node2D = _get_selectable_at_position(world_position)
@@ -119,15 +121,15 @@ func _handle_right_click(world_position: Vector2) -> void:
 		is_build_mode_active = false
 		build_feedback_text = "Build mode cancelled"
 		build_system.clear_preview()
-		command_marker.show_marker(world_position, Color(0.92, 0.32, 0.32, 0.9))
+		command_marker.show_marker(world_position, Color(0.92, 0.32, 0.32, 0.9), &"cancel")
 		return
 
 	if selected_unit == hero:
 		hero.set_move_target(world_position)
-		command_marker.show_marker(world_position, Color(0.92, 0.95, 0.32, 0.9))
+		command_marker.show_marker(world_position, Color(0.92, 0.95, 0.32, 0.9), &"move")
 	elif selected_unit == builder:
 		builder.set_move_target(world_position)
-		command_marker.show_marker(world_position, Color(0.45, 0.82, 1.0, 0.9))
+		command_marker.show_marker(world_position, Color(0.45, 0.82, 1.0, 0.9), &"move")
 
 
 func _set_selected_unit(unit: Node2D) -> void:
@@ -148,6 +150,7 @@ func _set_selected_unit(unit: Node2D) -> void:
 		build_system.clear_preview()
 
 	build_feedback_text = ""
+	_update_selection_feedback()
 
 
 func _get_selectable_at_position(world_position: Vector2) -> Node2D:
@@ -296,7 +299,7 @@ func _on_upgrade_fortress_button_pressed() -> void:
 
 func _on_spend_failed(reason: String) -> void:
 	build_feedback_text = reason
-	command_marker.show_marker(_get_world_mouse_position(), Color(0.92, 0.32, 0.32, 0.9))
+	command_marker.show_marker(_get_world_mouse_position(), Color(0.92, 0.32, 0.32, 0.9), &"cancel")
 
 
 func _on_fortress_destroyed() -> void:
@@ -306,3 +309,19 @@ func _on_fortress_destroyed() -> void:
 func _on_elite_spawned(next_alert_text: String) -> void:
 	alert_text = next_alert_text
 	alert_time_remaining = 4.5
+
+
+func _update_selection_feedback() -> void:
+	if selected_unit == null:
+		selection_feedback.set("tracked_unit", null)
+		selection_feedback.visible = false
+		return
+
+	var has_move_target: bool = false
+	var move_target: Vector2 = selected_unit.global_position
+	if selected_unit.has_method("has_active_move_target"):
+		has_move_target = selected_unit.has_active_move_target()
+	if selected_unit.has_method("get_move_target"):
+		move_target = selected_unit.get_move_target()
+
+	selection_feedback.call("update_tracking", selected_unit, has_move_target, move_target)

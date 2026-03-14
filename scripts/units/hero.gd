@@ -35,6 +35,14 @@ func clear_move_target() -> void:
 	has_move_target = false
 
 
+func has_active_move_target() -> bool:
+	return has_move_target
+
+
+func get_move_target() -> Vector2:
+	return move_target
+
+
 func _process(delta: float) -> void:
 	if hero_def == null or enemies_root == null or combat_system == null:
 		return
