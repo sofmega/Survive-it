@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3]
+[gd_scene load_steps=17 format=3]
 
 [ext_resource type="Script" path="res://scripts/core/game_root/game_root.gd" id="1_root"]
 [ext_resource type="PackedScene" path="res://scenes/world/map_view.tscn" id="2_map"]
@@ -15,6 +15,7 @@
 [ext_resource type="Script" path="res://scripts/ui/placement_preview.gd" id="13_preview"]
 [ext_resource type="Script" path="res://scripts/ui/command_marker.gd" id="14_marker"]
 [ext_resource type="Script" path="res://scripts/ui/selection_feedback.gd" id="15_selection"]
+[ext_resource type="Script" path="res://scripts/core/game_root/battle_camera.gd" id="16_camera"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_build_panel"]
 bg_color = Color(0.08, 0.11, 0.12, 0.92)
@@ -34,6 +35,10 @@ shadow_size = 8
 script = ExtResource("1_root")
 
 [node name="Map" parent="." instance=ExtResource("2_map")]
+
+[node name="BattleCamera" type="Camera2D" parent="."]
+script = ExtResource("16_camera")
+current = true
 
 [node name="World" type="Node2D" parent="."]
 

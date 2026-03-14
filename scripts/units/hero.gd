@@ -27,6 +27,7 @@ func set_selected(next_selected: bool) -> void:
 
 
 func set_move_target(target_position: Vector2) -> void:
+	print("[hero] set_move_target ->", target_position)
 	move_target = target_position
 	has_move_target = true
 

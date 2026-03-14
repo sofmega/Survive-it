@@ -28,11 +28,24 @@ func _draw() -> void:
 	var pulse: float = 2.0 + sin(pulse_time * 4.2) * 1.5
 	var outer_radius: float = 28.0 + pulse
 	var inner_radius: float = 22.0 + pulse * 0.4
-	draw_arc(Vector2.ZERO, outer_radius, 0.0, TAU, 36, Color(0.94, 0.97, 0.42, 0.92), 3.0)
-	draw_arc(Vector2.ZERO, inner_radius, 0.0, TAU, 28, Color(0.34, 0.83, 1.0, 0.62), 2.0)
+	var glow_color := Color(0.42, 0.86, 1.0, 0.72)
+	draw_arc(Vector2.ZERO, outer_radius, 0.0, TAU, 36, glow_color, 3.0)
+	draw_arc(Vector2.ZERO, inner_radius, 0.0, TAU, 28, Color(0.3, 0.85, 1.0, 0.6), 2.0)
 	draw_circle(Vector2.ZERO, 4.0, Color(0.95, 0.95, 0.95, 0.55))
+	draw_circle(Vector2.ZERO, 12.0, Color(0.12, 0.22, 0.35, 0.35))
 
 	if show_move_target:
 		var target_local: Vector2 = to_local(move_target)
-		draw_dashed_line(Vector2.ZERO, target_local, Color(0.94, 0.97, 0.42, 0.62), 3.0, 10.0)
-		draw_arc(target_local, 16.0, 0.0, TAU, 28, Color(0.94, 0.97, 0.42, 0.82), 2.0)
+		var target_color := Color(0.94, 0.97, 0.42, 0.65)
+		draw_dashed_line(Vector2.ZERO, target_local, target_color, 3.0, 10.0)
+		draw_arc(target_local, 16.0, 0.0, TAU, 28, target_color, 2.0)
+		draw_circle(target_local, 8.0, Color(0.95, 0.32, 0.32, 0.26), true)
+		draw_arc(target_local, 20.0, 0.0, TAU, 24, target_color, 2.0)
+
+		if target_local.length() > 8.0:
+			var direction := target_local.normalized()
+			var arrow_tip := target_local
+			var arrow_left := arrow_tip - direction.rotated(PI / 6) * 18.0
+			var arrow_right := arrow_tip - direction.rotated(-PI / 6) * 18.0
+			draw_line(arrow_tip, arrow_left, target_color, 2.5)
+			draw_line(arrow_tip, arrow_right, target_color, 2.5)

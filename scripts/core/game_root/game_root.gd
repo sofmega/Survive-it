@@ -24,6 +24,8 @@ const BUILDING_OPTIONS := [
 @onready var economy_system: Node = $Directors/EconomySystem
 @onready var combat_system: Node = $Directors/CombatSystem
 @onready var hud: CanvasLayer = $UI/HUD
+@onready var battle_camera: Camera2D = $BattleCamera
+@onready var map_view: Node = $Map
 @onready var arrow_tower_button: Button = $UI/BuildPanel/CommandDeck/MarginContainer/VBoxContainer/ArrowTowerButton
 @onready var slow_beacon_button: Button = $UI/BuildPanel/CommandDeck/MarginContainer/VBoxContainer/SlowBeaconButton
 @onready var repair_post_button: Button = $UI/BuildPanel/CommandDeck/MarginContainer/VBoxContainer/RepairPostButton
@@ -49,6 +51,9 @@ func _ready() -> void:
 	fortress.tier_def = FORTRESS_TIERS[0]
 	hero.hero_def = HERO_DEF
 	fortress.destroyed.connect(_on_fortress_destroyed)
+
+	set_process_input(true)
+	set_process_unhandled_input(true)
 
 	economy_system.setup(120)
 	economy_system.spend_failed.connect(_on_spend_failed)
@@ -80,6 +85,15 @@ func _ready() -> void:
 	placement_preview.visible = false
 	command_marker.visible = false
 
+	if battle_camera != null:
+		battle_camera.setup(fortress)
+
+	var minimap_control = hud.get_minimap_display()
+	if minimap_control != null:
+		minimap_control.setup(fortress, hero, builder, enemies_root, structures_root, map_view)
+		if battle_camera != null:
+			minimap_control.focus_request.connect(battle_camera.seek_world_position)
+
 
 func _process(delta: float) -> void:
 	alert_time_remaining = maxf(alert_time_remaining - delta, 0.0)
@@ -103,6 +117,7 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func _handle_left_click(world_position: Vector2) -> void:
+	print("[input] left_click at", world_position)
 	if is_build_mode_active and selected_unit == builder:
 		var was_built: bool = bool(build_system.request_place_building(builder.selected_building_def, world_position))
 		if was_built:
@@ -113,6 +128,7 @@ func _handle_left_click(world_position: Vector2) -> void:
 		return
 
 	var clicked_selection: Node2D = _get_selectable_at_position(world_position)
+	print("[input] clicked_selection raw=", clicked_selection)
 	_set_selected_unit(clicked_selection)
 
 
@@ -124,12 +140,22 @@ func _handle_right_click(world_position: Vector2) -> void:
 		command_marker.show_marker(world_position, Color(0.92, 0.32, 0.32, 0.9), &"cancel")
 		return
 
-	if selected_unit == hero:
-		hero.set_move_target(world_position)
-		command_marker.show_marker(world_position, Color(0.92, 0.95, 0.32, 0.9), &"move")
-	elif selected_unit == builder:
-		builder.set_move_target(world_position)
-		command_marker.show_marker(world_position, Color(0.45, 0.82, 1.0, 0.9), &"move")
+	_issue_move_command(world_position)
+
+func _issue_move_command(world_position: Vector2) -> void:
+	print("[input] right_click target=", world_position, "current selection=", selected_unit)
+	var target_unit: Node2D = selected_unit
+
+	if target_unit == null or not target_unit.has_method("set_move_target"):
+		target_unit = hero
+		_set_selected_unit(hero)
+
+	if target_unit == hero or target_unit == builder:
+		var marker_color: Color = Color(0.92, 0.95, 0.32, 0.9)
+		if target_unit == builder:
+			marker_color = Color(0.45, 0.82, 1.0, 0.9)
+		target_unit.call("set_move_target", world_position)
+		command_marker.show_marker(world_position, marker_color, &"move")
 
 
 func _set_selected_unit(unit: Node2D) -> void:
@@ -141,9 +167,13 @@ func _set_selected_unit(unit: Node2D) -> void:
 	selected_unit = unit
 
 	if selected_unit == hero:
+		print("[selection] hero selected")
 		hero.set_selected(true)
 	elif selected_unit == builder:
+		print("[selection] builder selected")
 		builder.set_selected(true)
+	elif selected_unit == null:
+		print("[selection] cleared")
 
 	if selected_unit != builder:
 		is_build_mode_active = false
@@ -164,6 +194,8 @@ func _get_selectable_at_position(world_position: Vector2) -> Node2D:
 
 
 func _get_world_mouse_position() -> Vector2:
+	if battle_camera != null:
+		return battle_camera.get_global_mouse_position()
 	return get_global_mouse_position()
 
 

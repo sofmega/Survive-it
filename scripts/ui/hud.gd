@@ -67,3 +67,6 @@ func _on_run_won() -> void:
 	outcome_title_label.text = "Victory"
 	outcome_detail_label.text = "The fortress held through the final wave."
 	outcome_overlay.visible = true
+
+func get_minimap_display() -> Node:
+	return $MinimapPanel/MarginContainer/VBoxContainer/MinimapDisplay
