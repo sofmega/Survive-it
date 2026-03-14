@@ -26,6 +26,9 @@ const BUILDING_OPTIONS := [
 @onready var hud: CanvasLayer = $UI/HUD
 @onready var battle_camera: Camera2D = $BattleCamera
 @onready var map_view: Node = $Map
+@onready var command_deck: PanelContainer = $UI/BuildPanel/CommandDeck
+@onready var command_deck_title_label: Label = $UI/BuildPanel/CommandDeck/MarginContainer/VBoxContainer/TitleLabel
+@onready var command_deck_sub_label: Label = $UI/BuildPanel/CommandDeck/MarginContainer/VBoxContainer/SubLabel
 @onready var arrow_tower_button: Button = $UI/BuildPanel/CommandDeck/MarginContainer/VBoxContainer/ArrowTowerButton
 @onready var slow_beacon_button: Button = $UI/BuildPanel/CommandDeck/MarginContainer/VBoxContainer/SlowBeaconButton
 @onready var repair_post_button: Button = $UI/BuildPanel/CommandDeck/MarginContainer/VBoxContainer/RepairPostButton
@@ -33,6 +36,7 @@ const BUILDING_OPTIONS := [
 @onready var repair_fortress_button: Button = $UI/BuildPanel/CommandDeck/MarginContainer/VBoxContainer/RepairFortressButton
 @onready var upgrade_fortress_button: Button = $UI/BuildPanel/CommandDeck/MarginContainer/VBoxContainer/UpgradeFortressButton
 @onready var build_cost_label: Label = $UI/BuildPanel/CommandDeck/MarginContainer/VBoxContainer/CostLabel
+@onready var command_hint_label: Label = $UI/BuildPanel/CommandDeck/MarginContainer/VBoxContainer/HintLabel
 @onready var placement_preview: Node2D = $Debug/PlacementPreview
 @onready var command_marker: Node2D = $Debug/CommandMarker
 @onready var selection_feedback: Node2D = $Debug/SelectionFeedback
@@ -45,6 +49,7 @@ var preview_visible: bool = false
 var preview_valid: bool = false
 var alert_text: String = ""
 var alert_time_remaining: float = 0.0
+var command_hover_text: String = ""
 
 
 func _ready() -> void:
@@ -81,6 +86,14 @@ func _ready() -> void:
 	command_banner_button.pressed.connect(func() -> void: _enter_build_mode(BUILDING_OPTIONS[3]))
 	repair_fortress_button.pressed.connect(_on_repair_fortress_button_pressed)
 	upgrade_fortress_button.pressed.connect(_on_upgrade_fortress_button_pressed)
+	_wire_command_hover(arrow_tower_button, BUILDING_OPTIONS[0].display_name, BUILDING_OPTIONS[0].build_cost, BUILDING_OPTIONS[0].description)
+	_wire_command_hover(slow_beacon_button, BUILDING_OPTIONS[1].display_name, BUILDING_OPTIONS[1].build_cost, BUILDING_OPTIONS[1].description)
+	_wire_command_hover(repair_post_button, BUILDING_OPTIONS[2].display_name, BUILDING_OPTIONS[2].build_cost, BUILDING_OPTIONS[2].description)
+	_wire_command_hover(command_banner_button, BUILDING_OPTIONS[3].display_name, BUILDING_OPTIONS[3].build_cost, BUILDING_OPTIONS[3].description)
+	repair_fortress_button.mouse_entered.connect(func() -> void: command_hover_text = _get_fortress_action_summary())
+	repair_fortress_button.mouse_exited.connect(_clear_command_hover)
+	upgrade_fortress_button.mouse_entered.connect(func() -> void: command_hover_text = _get_fortress_action_summary())
+	upgrade_fortress_button.mouse_exited.connect(_clear_command_hover)
 	_update_build_cost_label()
 	placement_preview.visible = false
 	command_marker.visible = false
@@ -100,6 +113,7 @@ func _process(delta: float) -> void:
 	if alert_time_remaining <= 0.0 and not alert_text.is_empty():
 		alert_text = ""
 	_update_selection_feedback()
+	_update_contextual_command_panel()
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -117,7 +131,6 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func _handle_left_click(world_position: Vector2) -> void:
-	print("[input] left_click at", world_position)
 	if is_build_mode_active and selected_unit == builder:
 		var was_built: bool = bool(build_system.request_place_building(builder.selected_building_def, world_position))
 		if was_built:
@@ -128,7 +141,6 @@ func _handle_left_click(world_position: Vector2) -> void:
 		return
 
 	var clicked_selection: Node2D = _get_selectable_at_position(world_position)
-	print("[input] clicked_selection raw=", clicked_selection)
 	_set_selected_unit(clicked_selection)
 
 
@@ -143,7 +155,6 @@ func _handle_right_click(world_position: Vector2) -> void:
 	_issue_move_command(world_position)
 
 func _issue_move_command(world_position: Vector2) -> void:
-	print("[input] right_click target=", world_position, "current selection=", selected_unit)
 	var target_unit: Node2D = selected_unit
 
 	if target_unit == null or not target_unit.has_method("set_move_target"):
@@ -167,13 +178,9 @@ func _set_selected_unit(unit: Node2D) -> void:
 	selected_unit = unit
 
 	if selected_unit == hero:
-		print("[selection] hero selected")
 		hero.set_selected(true)
 	elif selected_unit == builder:
-		print("[selection] builder selected")
 		builder.set_selected(true)
-	elif selected_unit == null:
-		print("[selection] cleared")
 
 	if selected_unit != builder:
 		is_build_mode_active = false
@@ -210,6 +217,52 @@ func get_selected_unit_label() -> String:
 		return "Hero"
 
 	return "None"
+
+
+func should_show_selected_unit_panel() -> bool:
+	return selected_unit != null
+
+
+func get_selected_unit_title() -> String:
+	if selected_unit == hero:
+		return "Hero"
+	if selected_unit == builder:
+		return "Builder"
+	return "No Unit Selected"
+
+
+func get_selected_unit_health_label() -> String:
+	if selected_unit == hero and hero.hero_def != null:
+		return "HP %.0f / %.0f | Range %.0f" % [hero.current_health, hero.hero_def.max_health, hero.hero_def.attack_range]
+	if selected_unit == builder:
+		return "Field engineer | Move speed %.0f" % builder.move_speed
+	return ""
+
+
+func get_selected_unit_status_label() -> String:
+	if selected_unit == builder:
+		if is_build_mode_active:
+			return "Placing %s | %s" % [builder.selected_building_def.display_name, build_feedback_text]
+		return "Ready to build | %s" % builder.get_selected_building_name()
+	if selected_unit == hero:
+		return "Support radius %.0f | %s" % [hero.hero_def.support_radius, get_hint_label()]
+	return ""
+
+
+func should_show_fortress_panel() -> bool:
+	return _is_cursor_near_fortress()
+
+
+func get_fortress_panel_title() -> String:
+	return "Fortress Overview"
+
+
+func get_fortress_panel_health_label() -> String:
+	return "HP %.0f / %.0f | Tier %d" % [fortress.current_health, fortress.max_health, fortress.get_tier_index()]
+
+
+func get_fortress_panel_costs_label() -> String:
+	return _get_fortress_action_summary()
 
 
 func get_build_mode_label() -> String:
@@ -266,6 +319,10 @@ func get_hint_label() -> String:
 	if selected_unit == hero:
 		return "Hero selected | Right click move | Keep the hero near towers to boost damage"
 	return "Left click select | Right click move/cancel | Use the build panel for structures"
+
+
+func _is_cursor_near_fortress() -> bool:
+	return _get_world_mouse_position().distance_to(fortress.global_position) <= 140.0
 
 
 func _enter_build_mode(building_def) -> void:
@@ -357,3 +414,50 @@ func _update_selection_feedback() -> void:
 		move_target = selected_unit.get_move_target()
 
 	selection_feedback.call("update_tracking", selected_unit, has_move_target, move_target)
+
+
+func _update_contextual_command_panel() -> void:
+	var show_builder_commands: bool = selected_unit == builder
+	var show_fortress_actions: bool = not show_builder_commands and _is_cursor_near_fortress()
+	command_deck.visible = show_builder_commands or show_fortress_actions
+
+	if not command_deck.visible:
+		command_hover_text = ""
+		return
+
+	arrow_tower_button.visible = show_builder_commands
+	slow_beacon_button.visible = show_builder_commands
+	repair_post_button.visible = show_builder_commands
+	command_banner_button.visible = show_builder_commands
+	repair_fortress_button.visible = show_fortress_actions
+	upgrade_fortress_button.visible = show_fortress_actions
+
+	if show_builder_commands:
+		command_deck_title_label.text = "Builder Commands"
+		command_deck_sub_label.text = "Choose a structure, then place it inside the fortress zone."
+		_update_build_cost_label()
+		command_hint_label.text = command_hover_text if not command_hover_text.is_empty() else get_hint_label()
+	else:
+		command_deck_title_label.text = "Fortress Actions"
+		command_deck_sub_label.text = "Cursor near the fortress reveals upkeep and upgrades."
+		build_cost_label.text = _get_fortress_action_summary()
+		command_hint_label.text = command_hover_text if not command_hover_text.is_empty() else "Repair or upgrade only when the fortress needs it."
+
+
+func _get_fortress_action_summary() -> String:
+	var repair_text: String = "Repair %d gold (+%.0f HP)" % [fortress.get_repair_cost(), fortress.get_repair_amount()]
+	var upgrade_cost: int = fortress.get_upgrade_cost()
+	if upgrade_cost > 0:
+		return "%s | Upgrade %d gold" % [repair_text, upgrade_cost]
+	return "%s | Upgrade unavailable" % repair_text
+
+
+func _wire_command_hover(button: Button, display_name: String, cost: int, description: String) -> void:
+	button.mouse_entered.connect(func() -> void:
+		command_hover_text = "%s | %d gold | %s" % [display_name, cost, description]
+	)
+	button.mouse_exited.connect(_clear_command_hover)
+
+
+func _clear_command_hover() -> void:
+	command_hover_text = ""

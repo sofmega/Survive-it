@@ -3,19 +3,19 @@
 [ext_resource type="Script" path="res://scripts/ui/hud.gd" id="1_hud"]
 [ext_resource type="Script" path="res://scripts/ui/minimap.gd" id="2_minimap"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_header"]
-bg_color = Color(0.08, 0.11, 0.12, 0.9)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.77, 0.64, 0.34, 0.9)
-corner_radius_top_left = 10
-corner_radius_top_right = 10
-corner_radius_bottom_right = 10
-corner_radius_bottom_left = 10
-shadow_color = Color(0, 0, 0, 0.35)
-shadow_size = 8
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_top_bar"]
+bg_color = Color(0.04, 0.06, 0.08, 0.88)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.34, 0.46, 0.5, 0.82)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+shadow_color = Color(0, 0, 0, 0.28)
+shadow_size = 6
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel"]
 bg_color = Color(0.05, 0.08, 0.09, 0.84)
@@ -45,175 +45,242 @@ corner_radius_bottom_left = 10
 
 [node name="HUD" type="CanvasLayer"]
 script = ExtResource("1_hud")
-mouse_filter = 0
 
-[node name="HeaderPanel" type="PanelContainer" parent="."]
-offset_left = 22.0
-offset_top = 18.0
-offset_right = 430.0
-offset_bottom = 98.0
-theme_override_styles/panel = SubResource("StyleBoxFlat_header")
+[node name="TopBar" type="PanelContainer" parent="."]
+anchor_right = 1.0
+offset_left = 18.0
+offset_top = 14.0
+offset_right = -18.0
+offset_bottom = 72.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_top_bar")
+mouse_filter = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="HeaderPanel"]
-theme_override_constants/margin_left = 16
-theme_override_constants/margin_top = 12
-theme_override_constants/margin_right = 16
-theme_override_constants/margin_bottom = 12
+[node name="MarginContainer" type="MarginContainer" parent="TopBar"]
+theme_override_constants/margin_left = 14
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 14
+theme_override_constants/margin_bottom = 10
+mouse_filter = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="HeaderPanel/MarginContainer"]
+[node name="TopRow" type="HBoxContainer" parent="TopBar/MarginContainer"]
+alignment = 1
+theme_override_constants/separation = 18
+mouse_filter = 2
 
-[node name="TitleLabel" type="Label" parent="HeaderPanel/MarginContainer/VBoxContainer"]
+[node name="TitleLabel" type="Label" parent="TopBar/MarginContainer/TopRow"]
 text = "Survive it"
+mouse_filter = 2
 
-[node name="PhaseLabel" type="Label" parent="HeaderPanel/MarginContainer/VBoxContainer"]
-text = "Phase"
+[node name="ResourceGroup" type="HBoxContainer" parent="TopBar/MarginContainer/TopRow"]
+theme_override_constants/separation = 10
+size_flags_horizontal = 3
+mouse_filter = 2
 
-[node name="StatusPanel" type="PanelContainer" parent="."]
-offset_left = 22.0
-offset_top = 112.0
-offset_right = 356.0
-offset_bottom = 262.0
+[node name="GoldChip" type="PanelContainer" parent="TopBar/MarginContainer/TopRow/ResourceGroup"]
 theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
+mouse_filter = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="StatusPanel"]
-theme_override_constants/margin_left = 14
-theme_override_constants/margin_top = 12
-theme_override_constants/margin_right = 14
-theme_override_constants/margin_bottom = 12
+[node name="MarginContainer" type="MarginContainer" parent="TopBar/MarginContainer/TopRow/ResourceGroup/GoldChip"]
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 6
+mouse_filter = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="StatusPanel/MarginContainer"]
-
-[node name="SectionLabel" type="Label" parent="StatusPanel/MarginContainer/VBoxContainer"]
-text = "Fortress Status"
-
-[node name="FortressLabel" type="Label" parent="StatusPanel/MarginContainer/VBoxContainer"]
-text = "Fortress"
-
-[node name="FortressTierLabel" type="Label" parent="StatusPanel/MarginContainer/VBoxContainer"]
-text = "Fortress tier"
-
-[node name="GoldLabel" type="Label" parent="StatusPanel/MarginContainer/VBoxContainer"]
+[node name="GoldValueLabel" type="Label" parent="TopBar/MarginContainer/TopRow/ResourceGroup/GoldChip/MarginContainer"]
 text = "Gold"
+mouse_filter = 2
 
-[node name="WaveLabel" type="Label" parent="StatusPanel/MarginContainer/VBoxContainer"]
-text = "Wave"
-
-[node name="IntelPanel" type="PanelContainer" parent="."]
-offset_left = 372.0
-offset_top = 112.0
-offset_right = 806.0
-offset_bottom = 262.0
+[node name="WaveChip" type="PanelContainer" parent="TopBar/MarginContainer/TopRow/ResourceGroup"]
 theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
+mouse_filter = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="IntelPanel"]
-theme_override_constants/margin_left = 14
-theme_override_constants/margin_top = 12
-theme_override_constants/margin_right = 14
-theme_override_constants/margin_bottom = 12
+[node name="MarginContainer" type="MarginContainer" parent="TopBar/MarginContainer/TopRow/ResourceGroup/WaveChip"]
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 6
+mouse_filter = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="IntelPanel/MarginContainer"]
+[node name="WaveValueLabel" type="Label" parent="TopBar/MarginContainer/TopRow/ResourceGroup/WaveChip/MarginContainer"]
+text = "Wave"
+mouse_filter = 2
 
-[node name="SectionLabel" type="Label" parent="IntelPanel/MarginContainer/VBoxContainer"]
-text = "Battlefield Intel"
+[node name="TimerChip" type="PanelContainer" parent="TopBar/MarginContainer/TopRow/ResourceGroup"]
+theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
+mouse_filter = 2
 
-[node name="UpcomingLabel" type="Label" parent="IntelPanel/MarginContainer/VBoxContainer"]
-text = "Upcoming"
+[node name="MarginContainer" type="MarginContainer" parent="TopBar/MarginContainer/TopRow/ResourceGroup/TimerChip"]
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 6
+mouse_filter = 2
 
-[node name="ThreatPreviewLabel" type="Label" parent="IntelPanel/MarginContainer/VBoxContainer"]
-text = "Threat preview"
+[node name="TimerValueLabel" type="Label" parent="TopBar/MarginContainer/TopRow/ResourceGroup/TimerChip/MarginContainer"]
+text = "Timer"
+mouse_filter = 2
 
-[node name="AlertPanel" type="PanelContainer" parent="IntelPanel/MarginContainer/VBoxContainer"]
+[node name="IntelGroup" type="VBoxContainer" parent="TopBar/MarginContainer/TopRow"]
+theme_override_constants/separation = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="IntelValueLabel" type="Label" parent="TopBar/MarginContainer/TopRow/IntelGroup"]
+text = "Intel"
+mouse_filter = 2
+
+[node name="ThreatValueLabel" type="Label" parent="TopBar/MarginContainer/TopRow/IntelGroup"]
+text = "Threat"
+mouse_filter = 2
+
+[node name="AlertChip" type="PanelContainer" parent="TopBar/MarginContainer/TopRow"]
 theme_override_styles/panel = SubResource("StyleBoxFlat_alert")
+mouse_filter = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="IntelPanel/MarginContainer/VBoxContainer/AlertPanel"]
+[node name="MarginContainer" type="MarginContainer" parent="TopBar/MarginContainer/TopRow/AlertChip"]
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 7
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 7
+mouse_filter = 2
+
+[node name="AlertLabel" type="Label" parent="TopBar/MarginContainer/TopRow/AlertChip/MarginContainer"]
+text = "Alert"
+mouse_filter = 2
+
+[node name="MinimapPanel" type="PanelContainer" parent="."]
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 18.0
+offset_top = -220.0
+offset_right = 282.0
+offset_bottom = -18.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
+mouse_filter = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="MinimapPanel"]
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 8
 theme_override_constants/margin_right = 10
-theme_override_constants/margin_bottom = 8
+theme_override_constants/margin_bottom = 10
+mouse_filter = 1
 
-[node name="AlertLabel" type="Label" parent="IntelPanel/MarginContainer/VBoxContainer/AlertPanel/MarginContainer"]
-text = "Alert"
+[node name="VBoxContainer" type="VBoxContainer" parent="MinimapPanel/MarginContainer"]
+theme_override_constants/separation = 6
+mouse_filter = 1
 
-[node name="ControlPanel" type="PanelContainer" parent="."]
-offset_left = 22.0
-offset_top = 278.0
-offset_right = 518.0
-offset_bottom = 520.0
-theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
+[node name="SectionLabel" type="Label" parent="MinimapPanel/MarginContainer/VBoxContainer"]
+text = "Minimap"
+mouse_filter = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="ControlPanel"]
-theme_override_constants/margin_left = 14
-theme_override_constants/margin_top = 12
-theme_override_constants/margin_right = 14
-theme_override_constants/margin_bottom = 12
-
-[node name="VBoxContainer" type="VBoxContainer" parent="ControlPanel/MarginContainer"]
-
-[node name="SectionLabel" type="Label" parent="ControlPanel/MarginContainer/VBoxContainer"]
-text = "Command Readout"
-
-[node name="SelectedUnitLabel" type="Label" parent="ControlPanel/MarginContainer/VBoxContainer"]
-text = "Selected unit"
-
-[node name="BuildModeLabel" type="Label" parent="ControlPanel/MarginContainer/VBoxContainer"]
-text = "Build mode"
-
-[node name="BuildFeedbackLabel" type="Label" parent="ControlPanel/MarginContainer/VBoxContainer"]
-text = "Build feedback"
-
-[node name="EconomyActionsLabel" type="Label" parent="ControlPanel/MarginContainer/VBoxContainer"]
-text = "Economy actions"
-
-[node name="HintLabel" type="Label" parent="ControlPanel/MarginContainer/VBoxContainer"]
-text = "Hints"
-autowrap_mode = 3
-
-[node name="OutcomeLabel" type="Label" parent="ControlPanel/MarginContainer/VBoxContainer"]
-text = ""
-
-[node name="MinimapPanel" type="PanelContainer" parent="."]
-offset_left = 1180.0
-offset_top = 520.0
-offset_right = 1590.0
-offset_bottom = 900.0
-theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
+[node name="MinimapDisplay" type="Control" parent="MinimapPanel/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(244, 160)
+script = ExtResource("2_minimap")
 mouse_filter = 0
 
-[node name="MarginContainer" type="MarginContainer" parent="MinimapPanel"]
+[node name="SelectedUnitPanel" type="PanelContainer" parent="."]
+visible = false
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -252.0
+offset_top = -152.0
+offset_right = 252.0
+offset_bottom = -18.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
+mouse_filter = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="SelectedUnitPanel"]
+theme_override_constants/margin_left = 14
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 14
+theme_override_constants/margin_bottom = 12
+mouse_filter = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="SelectedUnitPanel/MarginContainer"]
+theme_override_constants/separation = 4
+mouse_filter = 2
+
+[node name="UnitNameLabel" type="Label" parent="SelectedUnitPanel/MarginContainer/VBoxContainer"]
+text = "Selected Unit"
+horizontal_alignment = 1
+mouse_filter = 2
+
+[node name="UnitHealthLabel" type="Label" parent="SelectedUnitPanel/MarginContainer/VBoxContainer"]
+text = "Health"
+horizontal_alignment = 1
+mouse_filter = 2
+
+[node name="UnitStatusLabel" type="Label" parent="SelectedUnitPanel/MarginContainer/VBoxContainer"]
+text = "Status"
+horizontal_alignment = 1
+autowrap_mode = 3
+mouse_filter = 2
+
+[node name="FortressPanel" type="PanelContainer" parent="."]
+visible = false
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -426.0
+offset_top = 84.0
+offset_right = -18.0
+offset_bottom = 182.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
+mouse_filter = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="FortressPanel"]
 theme_override_constants/margin_left = 12
 theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 12
-theme_override_constants/margin_bottom = 12
+theme_override_constants/margin_bottom = 10
+mouse_filter = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MinimapPanel/MarginContainer"]
-[node name="SectionLabel" type="Label" parent="MinimapPanel/MarginContainer/VBoxContainer"]
-text = "Minimap"
-[node name="MinimapDisplay" type="Control" parent="MinimapPanel/MarginContainer/VBoxContainer"]
-rect_min_size = Vector2(320.0, 200.0)
-script = ExtResource("2_minimap")
+[node name="VBoxContainer" type="VBoxContainer" parent="FortressPanel/MarginContainer"]
+theme_override_constants/separation = 3
+mouse_filter = 2
+
+[node name="FortressTitleLabel" type="Label" parent="FortressPanel/MarginContainer/VBoxContainer"]
+text = "Fortress"
+mouse_filter = 2
+
+[node name="FortressHealthLabel" type="Label" parent="FortressPanel/MarginContainer/VBoxContainer"]
+text = "Health"
+mouse_filter = 2
+
+[node name="FortressCostsLabel" type="Label" parent="FortressPanel/MarginContainer/VBoxContainer"]
+text = "Costs"
+autowrap_mode = 3
 mouse_filter = 2
 
 [node name="OutcomeOverlay" type="CenterContainer" parent="."]
 visible = false
 offset_right = 1600.0
 offset_bottom = 900.0
+mouse_filter = 2
 
 [node name="PanelContainer" type="PanelContainer" parent="OutcomeOverlay"]
 theme_override_styles/panel = SubResource("StyleBoxFlat_alert")
+mouse_filter = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="OutcomeOverlay/PanelContainer"]
 theme_override_constants/margin_left = 28
 theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 28
 theme_override_constants/margin_bottom = 20
+mouse_filter = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="OutcomeOverlay/PanelContainer/MarginContainer"]
 alignment = 1
+mouse_filter = 2
 
 [node name="OutcomeTitleLabel" type="Label" parent="OutcomeOverlay/PanelContainer/MarginContainer/VBoxContainer"]
 text = "Outcome"
 horizontal_alignment = 1
+mouse_filter = 2
 
 [node name="OutcomeDetailLabel" type="Label" parent="OutcomeOverlay/PanelContainer/MarginContainer/VBoxContainer"]
 text = ""
 horizontal_alignment = 1
+mouse_filter = 2

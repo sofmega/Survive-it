@@ -84,10 +84,15 @@ script = ExtResource("12_combat")
 [node name="BuildPanel" type="CanvasLayer" parent="UI"]
 
 [node name="CommandDeck" type="PanelContainer" parent="UI/BuildPanel"]
-offset_left = 1238.0
-offset_top = 18.0
-offset_right = 1582.0
-offset_bottom = 360.0
+visible = false
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -346.0
+offset_top = -264.0
+offset_right = -18.0
+offset_bottom = -18.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_build_panel")
 
 [node name="MarginContainer" type="MarginContainer" parent="UI/BuildPanel/CommandDeck"]
@@ -102,7 +107,7 @@ theme_override_constants/margin_bottom = 16
 text = "Command Deck"
 
 [node name="SubLabel" type="Label" parent="UI/BuildPanel/CommandDeck/MarginContainer/VBoxContainer"]
-text = "Builder structures and fortress actions"
+text = "Context actions"
 
 [node name="ArrowTowerButton" type="Button" parent="UI/BuildPanel/CommandDeck/MarginContainer/VBoxContainer"]
 text = "Build Arrow Tower"
@@ -126,7 +131,7 @@ text = "Upgrade Fortress"
 text = "Arrow Tower Cost"
 
 [node name="HintLabel" type="Label" parent="UI/BuildPanel/CommandDeck/MarginContainer/VBoxContainer"]
-text = "Select the builder, choose a structure, then place it inside the fortress zone."
+text = "Context hint"
 autowrap_mode = 3
 
 [node name="Debug" type="Node2D" parent="."]
