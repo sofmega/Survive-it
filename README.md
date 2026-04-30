@@ -1,48 +1,43 @@
 # Survive it
 
-`Survive it` is a Godot 4 top-down defensive survival strategy prototype built around a fortress-centered survival loop.
+`Survive it` is a Godot 4 top-down survival-defense prototype inspired by Warcraft 3 Fortress Survival.
 
-## Stack
+## Core Loop
 
-- Engine: Godot 4
-- Language: GDScript
-- View: 2D top-down
+- Control one hero and one builder with RTS-style mouse input.
+- Survive waves `1` through `100`.
+- Enemies spawn from four visible edge portals.
+- Enemy priority is to hunt the hero and builder, then pressure player-built territory.
+- Build towers, walls, banners, and support structures to create a survivable base.
+- Gain gold from kills and wave clears, then spend it before the next surge.
 
-## Current Scaffold
+The support relay still exists as a build anchor and upgradeable support structure, but it is no longer the main loss condition.
 
-- Fortress-centered match scene
-- Central fortress with HP and lose condition
-- 60-second preparation phase
-- Three defensive waves plus an elite siege threat
-- Builder with RTS-style building placement
-- Hero with support combat and tower synergy
-- Fortress repair and upgrade loop
-- Multiple building roles and readable prototype UI
-- Planning and AI guidance docs
+## Loss And Victory
+
+- Defeat: both the hero and builder are dead.
+- Victory: Wave `100` is fully cleared.
+
+## Current Systems
+
+- `RunDirector` owns phases, defeat, and victory.
+- `WaveDirector` owns 100-wave progression and scaling.
+- `SpawnDirector` owns portal spawning.
+- `Enemy` owns local chase and attack behavior.
+- `BuildSystem` owns placement legality.
+- `EconomySystem` owns gold rewards and spending.
+- `HUD` displays state without owning gameplay rules.
+
+## Controls
+
+- Left click: select the hero or builder
+- Right click: move selected unit
+- Build panel: choose a structure while the builder is selected
+- Left click in build mode: place the structure
+- Right click in build mode: cancel placement
 
 ## Open The Project
 
 1. Install Godot 4.
-2. Open Godot.
-3. Import this folder:
-4. Run the project.
-
-## First Development Goal
-
-Build one playable loop:
-
-- survive one readable defensive run
-- defend the central fortress
-- place at least one basic tower during the prep phase
-- earn and spend gold
-- use the hero to support weak points
-
-## Prototype Controls
-
-- Mouse-driven RTS controls are the target input model
-- Left click: select hero, builder, or structures
-- Right click: issue movement or interaction commands
-- Build panel button: enter tower placement mode with the builder selected
-- Left click while in build mode: place the selected tower
-- Right click while in build mode: cancel placement
-
+2. Import this folder.
+3. Run the project.

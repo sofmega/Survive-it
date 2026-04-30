@@ -5,8 +5,8 @@
 [resource]
 script = ExtResource("1_f1")
 id = &"fortress_tier_1"
-display_name = "Fortress"
-description = "Central objective for the first playable loop."
+display_name = "Support Relay"
+description = "Starting relay that anchors territory building and tower support."
 tier_index = 1
 max_health = 250.0
 armor = 0.0

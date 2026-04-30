@@ -7,7 +7,7 @@
 script = ExtResource("1_e1")
 id = &"elite_siege_enemy"
 display_name = "Siege Captain"
-description = "Elite siege commander that unleashes a shock pulse against clustered defenses."
+description = "Elite portal captain that cracks clustered defenses and punishes static holds."
 scene = ExtResource("2_e2")
 max_health = 150.0
 move_speed = 36.0

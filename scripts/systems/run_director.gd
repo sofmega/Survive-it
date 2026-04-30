@@ -92,7 +92,7 @@ func enter_victory() -> void:
 
 
 func can_build() -> bool:
-	return current_phase == BUILD_PHASE
+	return current_phase in [BUILD_PHASE, REWARD_PHASE]
 
 
 func get_phase_label() -> String:
@@ -105,4 +105,3 @@ func get_time_remaining() -> float:
 
 func _on_wave_finished(_wave_number: int, reward_duration: float) -> void:
 	enter_reward_phase(reward_duration)
-

@@ -7,7 +7,7 @@
 script = ExtResource("1_e1")
 id = &"runner_enemy"
 display_name = "Runner"
-description = "Fast basic attacker for the first wave."
+description = "Fast hunter that chases exposed survival units."
 scene = ExtResource("2_e2")
 max_health = 24.0
 move_speed = 72.0
@@ -15,6 +15,6 @@ contact_damage = 8.0
 attack_range = 30.0
 attack_cooldown = 1.0
 gold_reward = 6
-preferred_target = &"fortress"
+preferred_target = &"survivors"
 radius = 16.0
 tint = Color(0.83, 0.29, 0.27, 1)

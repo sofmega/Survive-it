@@ -7,7 +7,7 @@
 script = ExtResource("1_e1")
 id = &"siege_enemy"
 display_name = "Siege Engine"
-description = "Prioritizes defenses before the fortress and deals heavy damage."
+description = "Breaks walls, towers, and exposed territory edges while hunting the player."
 scene = ExtResource("2_e2")
 max_health = 88.0
 move_speed = 34.0
@@ -18,4 +18,3 @@ gold_reward = 14
 preferred_target = &"structures"
 radius = 22.0
 tint = Color(0.88, 0.53, 0.18, 1)
-

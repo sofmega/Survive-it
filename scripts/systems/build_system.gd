@@ -12,10 +12,10 @@ var run_director: Node = null
 var combat_system: Node = null
 var enemies_root: Node2D = null
 var hero: Node2D = null
-var lane_y: float = 450.0
+var map_view: Node = null
 
 
-func setup(next_structures_root: Node2D, next_fortress: Node2D, next_economy_system: Node, next_run_director: Node, next_combat_system: Node, next_enemies_root: Node2D, next_hero: Node2D) -> void:
+func setup(next_structures_root: Node2D, next_fortress: Node2D, next_economy_system: Node, next_run_director: Node, next_combat_system: Node, next_enemies_root: Node2D, next_hero: Node2D, next_map_view: Node) -> void:
 	structures_root = next_structures_root
 	fortress = next_fortress
 	economy_system = next_economy_system
@@ -23,6 +23,7 @@ func setup(next_structures_root: Node2D, next_fortress: Node2D, next_economy_sys
 	combat_system = next_combat_system
 	enemies_root = next_enemies_root
 	hero = next_hero
+	map_view = next_map_view
 
 
 func request_place_building(building_def, world_position: Vector2) -> bool:
@@ -61,30 +62,55 @@ func get_placement_validation(building_def, world_position: Vector2) -> Dictiona
 		return _validation_result(false, world_position, "No building selected")
 
 	if not run_director.can_build():
-		return _validation_result(false, world_position, "Build phase only")
+		return _validation_result(false, world_position, "Setup phase only")
 
-	var snapped_position := Vector2(
-		round(world_position.x / GRID_SIZE) * GRID_SIZE,
-		round(world_position.y / GRID_SIZE) * GRID_SIZE
-	)
+	var snapped_position := world_position
+	if map_view != null and map_view.has_method("snap_to_grid"):
+		snapped_position = map_view.snap_to_grid(world_position)
+	else:
+		snapped_position = Vector2(
+			round(world_position.x / GRID_SIZE) * GRID_SIZE,
+			round(world_position.y / GRID_SIZE) * GRID_SIZE
+		)
 
 	return _is_valid_position(building_def, snapped_position)
 
+
 func _is_valid_position(building_def, world_position: Vector2) -> Dictionary:
-	if world_position.distance_to(fortress.global_position) > building_def.build_radius_limit:
-		return _validation_result(false, world_position, "Too far from fortress")
+	if not _is_within_build_anchor(world_position, building_def.build_radius_limit):
+		return _validation_result(false, world_position, "Need to build near the relay or a banner")
 
-	if world_position.distance_to(fortress.global_position) < 120.0:
-		return _validation_result(false, world_position, "Too close to fortress")
-
-	if absf(world_position.y - lane_y) < 64.0 and building_def.blocks_path:
-		return _validation_result(false, world_position, "Would block the lane")
+	if map_view != null and map_view.has_method("is_buildable_position"):
+		if not map_view.is_buildable_position(world_position, 26.0):
+			return _validation_result(false, world_position, "Blocked by terrain")
 
 	for structure in structures_root.get_children():
 		if structure.global_position.distance_to(world_position) < GRID_SIZE:
 			return _validation_result(false, world_position, "Tile already occupied")
 
+	if fortress != null and fortress.global_position.distance_to(world_position) < 120.0:
+		return _validation_result(false, world_position, "Too close to the relay")
+
 	return _validation_result(true, world_position, "Ready to build")
+
+
+func _is_within_build_anchor(world_position: Vector2, build_radius_limit: float) -> bool:
+	for anchor_position in _get_build_anchor_positions():
+		if anchor_position.distance_to(world_position) <= build_radius_limit:
+			return true
+	return false
+
+
+func _get_build_anchor_positions() -> Array[Vector2]:
+	var anchor_positions: Array[Vector2] = []
+	if fortress != null:
+		anchor_positions.append(fortress.global_position)
+	for structure in structures_root.get_children():
+		if not structure.has_method("is_build_anchor"):
+			continue
+		if structure.is_build_anchor():
+			anchor_positions.append(structure.global_position)
+	return anchor_positions
 
 
 func _validation_result(is_valid: bool, world_position: Vector2, message: String) -> Dictionary:

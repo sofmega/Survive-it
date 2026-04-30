@@ -2,9 +2,6 @@ extends Control
 
 signal focus_request(world_position: Vector2)
 
-const MAP_SCRIPT := preload("res://scripts/world/map_view.gd")
-const WORLD_SIZE: Vector2 = MAP_SCRIPT.WORLD_SIZE
-
 var fortress_node: Node2D
 var hero_node: Node2D
 var builder_node: Node2D
@@ -64,12 +61,13 @@ func _draw() -> void:
 		draw_line(Vector2(0.0, step_y * i), Vector2(size.x, step_y * i), Color(0.75, 0.85, 0.9, 0.2), 1.0)
 
 	if map_node != null:
-		var spawn_pos_value: Variant = map_node.get("west_spawn_position")
-		if spawn_pos_value is Vector2 and fortress_node != null:
-			var spawn_pos: Vector2 = spawn_pos_value
-			var start_point := _world_to_minimap(spawn_pos)
-			var end_point := _world_to_minimap(fortress_node.global_position)
-			draw_line(start_point, end_point, lane_color, 3.0)
+		_draw_walls()
+		if map_node.has_method("get_spawn_portal_positions") and fortress_node != null:
+			for portal_position in map_node.get_spawn_portal_positions().values():
+				var start_point := _world_to_minimap(portal_position)
+				var end_point := _world_to_minimap(fortress_node.global_position)
+				draw_line(start_point, end_point, lane_color, 2.0)
+				draw_circle(start_point, 5.0, enemy_color)
 
 	_draw_build_zone(size)
 	_draw_units_and_structures()
@@ -83,7 +81,8 @@ func _draw_build_zone(size: Vector2) -> void:
 		var node_radius_value: Variant = map_node.get("build_radius")
 		if typeof(node_radius_value) == TYPE_FLOAT or typeof(node_radius_value) == TYPE_INT:
 			radius = float(node_radius_value)
-	var scale: float = min(size.x / WORLD_SIZE.x, size.y / WORLD_SIZE.y)
+	var world_size := _get_world_size()
+	var scale: float = min(size.x / world_size.x, size.y / world_size.y)
 	var minimap_radius: float = radius * scale
 	draw_circle(base_position, minimap_radius, Color(0.32, 0.55, 0.85, 0.18))
 	draw_circle(base_position, minimap_radius * 0.6, Color(0.32, 0.55, 0.85, 0.20))
@@ -108,9 +107,10 @@ func _world_to_minimap(world_position: Vector2) -> Vector2:
 	var size: Vector2 = get_size()
 	if size.x <= 0 or size.y <= 0:
 		return Vector2.ZERO
+	var world_size := _get_world_size()
 	var normalized := Vector2(
-		clamp(world_position.x / WORLD_SIZE.x, 0.0, 1.0),
-		clamp(world_position.y / WORLD_SIZE.y, 0.0, 1.0)
+		clamp(world_position.x / world_size.x, 0.0, 1.0),
+		clamp(world_position.y / world_size.y, 0.0, 1.0)
 	)
 	return Vector2(normalized.x * size.x, normalized.y * size.y)
 
@@ -118,7 +118,23 @@ func _minimap_to_world(local_position: Vector2) -> Vector2:
 	var size: Vector2 = get_size()
 	if size.x <= 0 or size.y <= 0:
 		return Vector2.ZERO
+	var world_size := _get_world_size()
 	return Vector2(
-		clamp(local_position.x / size.x, 0.0, 1.0) * WORLD_SIZE.x,
-		clamp(local_position.y / size.y, 0.0, 1.0) * WORLD_SIZE.y
+		clamp(local_position.x / size.x, 0.0, 1.0) * world_size.x,
+		clamp(local_position.y / size.y, 0.0, 1.0) * world_size.y
 	)
+
+
+func _get_world_size() -> Vector2:
+	if map_node != null and map_node.has_method("get_world_size"):
+		return map_node.get_world_size()
+	return Vector2(1600.0, 900.0)
+
+
+func _draw_walls() -> void:
+	if map_node == null or not map_node.has_method("get_wall_rects"):
+		return
+	for wall_rect in map_node.get_wall_rects():
+		var rect_position := _world_to_minimap(wall_rect.position)
+		var rect_end := _world_to_minimap(wall_rect.end)
+		draw_rect(Rect2(rect_position, rect_end - rect_position), Color(0.22, 0.26, 0.28, 0.95), true)

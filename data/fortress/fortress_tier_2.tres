@@ -5,8 +5,8 @@
 [resource]
 script = ExtResource("1_f1")
 id = &"fortress_tier_2"
-display_name = "Fortress II"
-description = "Upgraded fortress with stronger support for nearby defenses."
+display_name = "Support Relay II"
+description = "Upgraded relay with stronger support for nearby defenses."
 tier_index = 2
 max_health = 360.0
 armor = 0.0

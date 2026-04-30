@@ -1,21 +1,21 @@
-[gd_scene load_steps=17 format=3]
+[gd_scene format=3 uid="uid://jbetps5uawlb"]
 
-[ext_resource type="Script" path="res://scripts/core/game_root/game_root.gd" id="1_root"]
+[ext_resource type="Script" uid="uid://nrcrxroilicj" path="res://scripts/core/game_root/game_root.gd" id="1_root"]
 [ext_resource type="PackedScene" path="res://scenes/world/map_view.tscn" id="2_map"]
 [ext_resource type="PackedScene" path="res://scenes/world/fortress.tscn" id="3_fortress"]
 [ext_resource type="PackedScene" path="res://scenes/units/hero.tscn" id="4_hero"]
 [ext_resource type="PackedScene" path="res://scenes/units/builder.tscn" id="5_builder"]
 [ext_resource type="PackedScene" path="res://scenes/ui/hud.tscn" id="6_hud"]
-[ext_resource type="Script" path="res://scripts/systems/run_director.gd" id="7_run"]
-[ext_resource type="Script" path="res://scripts/systems/wave_director.gd" id="8_wave"]
-[ext_resource type="Script" path="res://scripts/systems/spawn_director.gd" id="9_spawn"]
-[ext_resource type="Script" path="res://scripts/systems/build_system.gd" id="10_build"]
-[ext_resource type="Script" path="res://scripts/systems/economy_system.gd" id="11_economy"]
-[ext_resource type="Script" path="res://scripts/systems/combat_system.gd" id="12_combat"]
-[ext_resource type="Script" path="res://scripts/ui/placement_preview.gd" id="13_preview"]
-[ext_resource type="Script" path="res://scripts/ui/command_marker.gd" id="14_marker"]
-[ext_resource type="Script" path="res://scripts/ui/selection_feedback.gd" id="15_selection"]
-[ext_resource type="Script" path="res://scripts/core/game_root/battle_camera.gd" id="16_camera"]
+[ext_resource type="Script" uid="uid://cwwwikphrs68i" path="res://scripts/systems/run_director.gd" id="7_run"]
+[ext_resource type="Script" uid="uid://cnty5etx7jp2w" path="res://scripts/systems/wave_director.gd" id="8_wave"]
+[ext_resource type="Script" uid="uid://cuynbafv2s6vd" path="res://scripts/systems/spawn_director.gd" id="9_spawn"]
+[ext_resource type="Script" uid="uid://dd4slve18l2nr" path="res://scripts/systems/build_system.gd" id="10_build"]
+[ext_resource type="Script" uid="uid://cobdlis52spk2" path="res://scripts/systems/economy_system.gd" id="11_economy"]
+[ext_resource type="Script" uid="uid://y0dhrjae5rrw" path="res://scripts/systems/combat_system.gd" id="12_combat"]
+[ext_resource type="Script" uid="uid://ccripdw8wa3lt" path="res://scripts/ui/placement_preview.gd" id="13_preview"]
+[ext_resource type="Script" uid="uid://brycy0btw5mi5" path="res://scripts/ui/command_marker.gd" id="14_marker"]
+[ext_resource type="Script" uid="uid://bqfu3038l1ki" path="res://scripts/ui/selection_feedback.gd" id="15_selection"]
+[ext_resource type="Script" uid="uid://216pjfmf65id" path="res://scripts/core/game_root/battle_camera.gd" id="16_camera"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_build_panel"]
 bg_color = Color(0.08, 0.11, 0.12, 0.92)
@@ -31,116 +31,152 @@ corner_radius_bottom_left = 12
 shadow_color = Color(0, 0, 0, 0.35)
 shadow_size = 8
 
-[node name="GameRoot" type="Node2D"]
+[node name="GameRoot" type="Node2D" unique_id=938337503]
 script = ExtResource("1_root")
 
-[node name="Map" parent="." instance=ExtResource("2_map")]
+[node name="Map" parent="." unique_id=1148224359 instance=ExtResource("2_map")]
 
-[node name="BattleCamera" type="Camera2D" parent="."]
+[node name="BattleCamera" type="Camera2D" parent="." unique_id=1000675087]
 script = ExtResource("16_camera")
-current = true
 
-[node name="World" type="Node2D" parent="."]
+[node name="World" type="Node2D" parent="." unique_id=1428135422]
 
-[node name="Fortress" parent="World" instance=ExtResource("3_fortress")]
+[node name="Fortress" parent="World" unique_id=1527749648 instance=ExtResource("3_fortress")]
 position = Vector2(800, 450)
 
-[node name="Hero" parent="World" instance=ExtResource("4_hero")]
+[node name="Hero" parent="World" unique_id=2125387554 instance=ExtResource("4_hero")]
 
-[node name="Builder" parent="World" instance=ExtResource("5_builder")]
+[node name="Builder" parent="World" unique_id=1911787691 instance=ExtResource("5_builder")]
 
-[node name="Enemies" type="Node2D" parent="World"]
+[node name="Enemies" type="Node2D" parent="World" unique_id=1634648180]
 
-[node name="Structures" type="Node2D" parent="World"]
+[node name="Structures" type="Node2D" parent="World" unique_id=695857194]
 
-[node name="Projectiles" type="Node2D" parent="World"]
+[node name="Projectiles" type="Node2D" parent="World" unique_id=1668159003]
 
-[node name="FX" type="Node2D" parent="World"]
+[node name="FX" type="Node2D" parent="World" unique_id=117329746]
 
-[node name="Directors" type="Node" parent="."]
+[node name="Directors" type="Node" parent="." unique_id=955516055]
 
-[node name="RunDirector" type="Node" parent="Directors"]
+[node name="RunDirector" type="Node" parent="Directors" unique_id=670077251]
 script = ExtResource("7_run")
 
-[node name="WaveDirector" type="Node" parent="Directors"]
+[node name="WaveDirector" type="Node" parent="Directors" unique_id=1914374533]
 script = ExtResource("8_wave")
 
-[node name="SpawnDirector" type="Node" parent="Directors"]
+[node name="SpawnDirector" type="Node" parent="Directors" unique_id=537779327]
 script = ExtResource("9_spawn")
 
-[node name="BuildSystem" type="Node" parent="Directors"]
+[node name="BuildSystem" type="Node" parent="Directors" unique_id=180497385]
 script = ExtResource("10_build")
 
-[node name="EconomySystem" type="Node" parent="Directors"]
+[node name="EconomySystem" type="Node" parent="Directors" unique_id=62941537]
 script = ExtResource("11_economy")
 
-[node name="CombatSystem" type="Node" parent="Directors"]
+[node name="CombatSystem" type="Node" parent="Directors" unique_id=1642638058]
 script = ExtResource("12_combat")
 
-[node name="UI" type="Node" parent="."]
+[node name="UI" type="Node" parent="." unique_id=749017435]
 
-[node name="HUD" parent="UI" instance=ExtResource("6_hud")]
+[node name="HUD" parent="UI" unique_id=956119599 instance=ExtResource("6_hud")]
 
-[node name="BuildPanel" type="CanvasLayer" parent="UI"]
+[node name="BuildPanel" type="CanvasLayer" parent="UI" unique_id=595087852]
 
-[node name="CommandDeck" type="PanelContainer" parent="UI/BuildPanel"]
+[node name="CommandDeck" type="PanelContainer" parent="UI/BuildPanel" unique_id=1949180066]
 visible = false
+anchors_preset = 3
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -346.0
-offset_top = -264.0
+offset_left = -378.0
+offset_top = -318.0
 offset_right = -18.0
 offset_bottom = -18.0
+mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_build_panel")
 
-[node name="MarginContainer" type="MarginContainer" parent="UI/BuildPanel/CommandDeck"]
+[node name="MarginContainer" type="MarginContainer" parent="UI/BuildPanel/CommandDeck" unique_id=893143051]
+layout_mode = 2
+mouse_filter = 2
 theme_override_constants/margin_left = 16
-theme_override_constants/margin_top = 16
+theme_override_constants/margin_top = 14
 theme_override_constants/margin_right = 16
-theme_override_constants/margin_bottom = 16
+theme_override_constants/margin_bottom = 14
 
-[node name="VBoxContainer" type="VBoxContainer" parent="UI/BuildPanel/CommandDeck/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/BuildPanel/CommandDeck/MarginContainer" unique_id=2139038367]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 8
 
-[node name="TitleLabel" type="Label" parent="UI/BuildPanel/CommandDeck/MarginContainer/VBoxContainer"]
-text = "Command Deck"
+[node name="TitleLabel" type="Label" parent="UI/BuildPanel/CommandDeck/MarginContainer/VBoxContainer" unique_id=539795037]
+layout_mode = 2
+text = "Abilities"
 
-[node name="SubLabel" type="Label" parent="UI/BuildPanel/CommandDeck/MarginContainer/VBoxContainer"]
+[node name="SubLabel" type="Label" parent="UI/BuildPanel/CommandDeck/MarginContainer/VBoxContainer" unique_id=938504838]
+layout_mode = 2
 text = "Context actions"
+autowrap_mode = 3
 
-[node name="ArrowTowerButton" type="Button" parent="UI/BuildPanel/CommandDeck/MarginContainer/VBoxContainer"]
-text = "Build Arrow Tower"
+[node name="AbilityGrid" type="GridContainer" parent="UI/BuildPanel/CommandDeck/MarginContainer/VBoxContainer" unique_id=844353761]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/h_separation = 8
+theme_override_constants/v_separation = 8
+columns = 3
 
-[node name="SlowBeaconButton" type="Button" parent="UI/BuildPanel/CommandDeck/MarginContainer/VBoxContainer"]
-text = "Build Slow Beacon"
+[node name="ArrowTowerButton" type="Button" parent="UI/BuildPanel/CommandDeck/MarginContainer/VBoxContainer/AbilityGrid" unique_id=1714048907]
+custom_minimum_size = Vector2(56, 56)
+layout_mode = 2
+text = "A"
 
-[node name="RepairPostButton" type="Button" parent="UI/BuildPanel/CommandDeck/MarginContainer/VBoxContainer"]
-text = "Build Repair Post"
+[node name="SlowBeaconButton" type="Button" parent="UI/BuildPanel/CommandDeck/MarginContainer/VBoxContainer/AbilityGrid" unique_id=682214340]
+custom_minimum_size = Vector2(56, 56)
+layout_mode = 2
+text = "S"
 
-[node name="CommandBannerButton" type="Button" parent="UI/BuildPanel/CommandDeck/MarginContainer/VBoxContainer"]
-text = "Build Command Banner"
+[node name="RepairPostButton" type="Button" parent="UI/BuildPanel/CommandDeck/MarginContainer/VBoxContainer/AbilityGrid" unique_id=1015355395]
+custom_minimum_size = Vector2(56, 56)
+layout_mode = 2
+text = "R"
 
-[node name="RepairFortressButton" type="Button" parent="UI/BuildPanel/CommandDeck/MarginContainer/VBoxContainer"]
-text = "Repair Fortress"
+[node name="CommandBannerButton" type="Button" parent="UI/BuildPanel/CommandDeck/MarginContainer/VBoxContainer/AbilityGrid" unique_id=1245776189]
+custom_minimum_size = Vector2(56, 56)
+layout_mode = 2
+text = "C"
 
-[node name="UpgradeFortressButton" type="Button" parent="UI/BuildPanel/CommandDeck/MarginContainer/VBoxContainer"]
-text = "Upgrade Fortress"
+[node name="BarricadeButton" type="Button" parent="UI/BuildPanel/CommandDeck/MarginContainer/VBoxContainer/AbilityGrid" unique_id=989860136]
+custom_minimum_size = Vector2(56, 56)
+layout_mode = 2
+text = "B"
 
-[node name="CostLabel" type="Label" parent="UI/BuildPanel/CommandDeck/MarginContainer/VBoxContainer"]
-text = "Arrow Tower Cost"
+[node name="RepairFortressButton" type="Button" parent="UI/BuildPanel/CommandDeck/MarginContainer/VBoxContainer/AbilityGrid" unique_id=670426264]
+custom_minimum_size = Vector2(56, 56)
+layout_mode = 2
+text = "H"
 
-[node name="HintLabel" type="Label" parent="UI/BuildPanel/CommandDeck/MarginContainer/VBoxContainer"]
+[node name="UpgradeFortressButton" type="Button" parent="UI/BuildPanel/CommandDeck/MarginContainer/VBoxContainer/AbilityGrid" unique_id=1652667614]
+custom_minimum_size = Vector2(56, 56)
+layout_mode = 2
+text = "U"
+
+[node name="CostLabel" type="Label" parent="UI/BuildPanel/CommandDeck/MarginContainer/VBoxContainer" unique_id=1019309196]
+layout_mode = 2
+text = "Cost"
+autowrap_mode = 3
+
+[node name="HintLabel" type="Label" parent="UI/BuildPanel/CommandDeck/MarginContainer/VBoxContainer" unique_id=312925841]
+layout_mode = 2
 text = "Context hint"
 autowrap_mode = 3
 
-[node name="Debug" type="Node2D" parent="."]
+[node name="Debug" type="Node2D" parent="." unique_id=133218630]
 
-[node name="PlacementPreview" type="Node2D" parent="Debug"]
+[node name="PlacementPreview" type="Node2D" parent="Debug" unique_id=12249889]
 script = ExtResource("13_preview")
 
-[node name="CommandMarker" type="Node2D" parent="Debug"]
+[node name="CommandMarker" type="Node2D" parent="Debug" unique_id=516280615]
 script = ExtResource("14_marker")
 
-[node name="SelectionFeedback" type="Node2D" parent="Debug"]
+[node name="SelectionFeedback" type="Node2D" parent="Debug" unique_id=449051761]
 script = ExtResource("15_selection")

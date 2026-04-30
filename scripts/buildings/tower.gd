@@ -97,7 +97,9 @@ func _get_nearest_enemy(max_range: float) -> Node2D:
 
 
 func _get_attack_damage() -> float:
-	var damage: float = building_def.attack_damage * fortress.get_tower_damage_multiplier()
+	var damage: float = building_def.attack_damage
+	if fortress != null:
+		damage *= fortress.get_tower_damage_multiplier()
 	damage *= _get_boost_multiplier()
 	if hero != null and hero.has_method("get_tower_damage_multiplier"):
 		damage *= hero.get_tower_damage_multiplier(global_position)
@@ -126,6 +128,18 @@ func get_building_role() -> StringName:
 	if building_def == null:
 		return &"unknown"
 	return building_def.role
+
+
+func is_build_anchor() -> bool:
+	if building_def == null:
+		return false
+	return building_def.id == &"command_banner"
+
+
+func blocks_enemy_path() -> bool:
+	if building_def == null:
+		return false
+	return building_def.blocks_path
 
 
 func get_support_radius() -> float:
@@ -181,6 +195,10 @@ func _draw() -> void:
 		"damage":
 			draw_circle(Vector2(0, -4), 6.0, Color(0.95, 0.92, 0.82))
 			draw_line(Vector2(0, -4), Vector2(14, -18), Color(0.95, 0.95, 0.95), 3.0)
+		"block":
+			draw_rect(Rect2(Vector2(-14, -10), Vector2(28, 20)), Color(0.45, 0.32, 0.2), true)
+			draw_line(Vector2(-18, -16), Vector2(18, 16), Color(0.82, 0.74, 0.58), 3.0)
+			draw_line(Vector2(-18, 16), Vector2(18, -16), Color(0.82, 0.74, 0.58), 3.0)
 		"slow":
 			draw_circle(Vector2.ZERO, 10.0, Color(0.74, 0.9, 1.0))
 			draw_arc(Vector2.ZERO, 18.0, 0.0, TAU, 24, Color(0.74, 0.9, 1.0, 0.75), 2.0)

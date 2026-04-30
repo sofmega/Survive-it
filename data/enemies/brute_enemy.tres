@@ -7,7 +7,7 @@
 script = ExtResource("1_e1")
 id = &"brute_enemy"
 display_name = "Brute"
-description = "Slow armored attacker that soaks tower fire."
+description = "Slow bruiser that hunts through tower fire and pressures the front line."
 scene = ExtResource("2_e2")
 max_health = 72.0
 move_speed = 42.0
@@ -15,7 +15,6 @@ contact_damage = 14.0
 attack_range = 30.0
 attack_cooldown = 1.2
 gold_reward = 10
-preferred_target = &"fortress"
+preferred_target = &"survivors"
 radius = 20.0
 tint = Color(0.62, 0.45, 0.28, 1)
-

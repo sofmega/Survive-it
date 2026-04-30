@@ -1,0 +1,29 @@
+[gd_resource type="Resource" script_class="RunBalanceDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/balance/run_balance_def.gd" id="1_balance"]
+
+[resource]
+script = ExtResource("1_balance")
+max_waves = 100
+starting_gold = 180
+starting_prep_duration = 22.0
+min_prep_duration = 8.0
+prep_duration_decay_per_wave = 0.12
+post_wave_delay = 6.0
+base_enemy_count = 6
+enemy_count_growth_per_wave = 0.95
+extra_enemy_burst_every_ten = 6
+clear_reward_base = 22
+clear_reward_growth_per_wave = 2.0
+bonus_reward_every_five = 18
+enemy_health_scale_per_wave = 0.055
+enemy_damage_scale_per_wave = 0.03
+enemy_speed_scale_per_wave = 0.006
+max_enemy_speed_multiplier = 1.65
+second_portal_wave = 4
+third_portal_wave = 10
+fourth_portal_wave = 18
+brute_start_wave = 4
+siege_start_wave = 8
+elite_wave_interval = 5
+captain_wave_interval = 10

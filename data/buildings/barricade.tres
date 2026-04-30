@@ -5,19 +5,19 @@
 
 [resource]
 script = ExtResource("1_b1")
-id = &"command_banner"
-display_name = "Command Banner"
-description = "Support structure that boosts nearby damage towers without replacing them."
+id = &"barricade"
+display_name = "Barricade"
+description = "Cheap choke-point blocker that soaks hits before aliens reach the base."
 scene = ExtResource("2_b2")
-build_cost = 75
+build_cost = 25
 footprint_size = Vector2i(1, 1)
-build_radius_limit = 1400.0
-blocks_path = false
-max_health = 55.0
+build_radius_limit = 320.0
+blocks_path = true
+max_health = 120.0
 attack_damage = 0.0
 attack_range = 0.0
-attack_cooldown = 1.1
-aura_radius = 180.0
-utility_power = 0.35
-role = &"boost"
-tint = Color(0.76, 0.46, 0.2, 1)
+attack_cooldown = 1.0
+aura_radius = 0.0
+utility_power = 0.0
+role = &"block"
+tint = Color(0.52, 0.36, 0.22, 1)
