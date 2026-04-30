@@ -16,5 +16,6 @@ attack_range = 36.0
 attack_cooldown = 1.4
 gold_reward = 14
 preferred_target = &"structures"
+prefers_blocking_structures = true
 radius = 22.0
 tint = Color(0.88, 0.53, 0.18, 1)

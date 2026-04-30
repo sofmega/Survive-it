@@ -4,8 +4,8 @@ extends Resource
 @export var max_waves: int = 100
 @export var starting_gold: int = 180
 
-@export var starting_prep_duration: float = 22.0
-@export var min_prep_duration: float = 8.0
+@export var starting_prep_duration: float = 10.0
+@export var min_prep_duration: float = 10.0
 @export var prep_duration_decay_per_wave: float = 0.12
 @export var post_wave_delay: float = 6.0
 

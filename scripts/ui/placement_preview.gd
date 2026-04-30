@@ -1,8 +1,11 @@
 extends Node2D
 
-var is_valid_preview: bool = false:
+var _is_valid_preview: bool = false
+var is_valid_preview: bool:
+	get:
+		return _is_valid_preview
 	set(value):
-		is_valid_preview = value
+		_is_valid_preview = value
 		queue_redraw()
 
 

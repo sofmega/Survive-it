@@ -16,6 +16,7 @@ attack_range = 40.0
 attack_cooldown = 1.5
 gold_reward = 24
 preferred_target = &"structures"
+prefers_blocking_structures = true
 is_elite = true
 alert_text = "Elite threat: Siege Captain pulse incoming"
 special_attack_cooldown = 4.5

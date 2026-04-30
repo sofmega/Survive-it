@@ -10,6 +10,7 @@ extends Resource
 @export var footprint_size: Vector2i = Vector2i.ONE
 @export var build_radius_limit: float = 280.0
 @export var blocks_path: bool = true
+@export var allows_entrance_seal: bool = false
 
 @export var max_health: float = 50.0
 @export var attack_damage: float = 6.0

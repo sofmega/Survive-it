@@ -18,11 +18,17 @@ var phase_time_remaining: float = 0.0
 var wave_director: Node = null
 
 
+func _ready() -> void:
+	set_process(true)
+
+
 func setup(next_wave_director: Node) -> void:
 	wave_director = next_wave_director
 
 	if wave_director != null:
 		wave_director.wave_finished.connect(_on_wave_finished)
+	else:
+		push_warning("RunDirector setup missing WaveDirector reference.")
 
 	enter_build_phase(wave_director.get_prep_duration())
 
@@ -92,7 +98,7 @@ func enter_victory() -> void:
 
 
 func can_build() -> bool:
-	return current_phase in [BUILD_PHASE, REWARD_PHASE]
+	return current_phase not in [GAME_OVER, VICTORY]
 
 
 func get_phase_label() -> String:

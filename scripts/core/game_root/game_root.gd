@@ -80,7 +80,10 @@ func _ready() -> void:
 	wave_director.elite_spawned.connect(_on_elite_spawned)
 	run_director.setup(wave_director)
 
-	build_system.setup(structures_root, fortress, economy_system, run_director, combat_system, enemies_root, hero, map_view)
+	if map_view != null and map_view.has_method("setup_navigation"):
+		map_view.setup_navigation(structures_root, fortress)
+
+	build_system.setup(structures_root, fortress, economy_system, run_director, combat_system, enemies_root, hero, builder, map_view)
 	build_system.preview_updated.connect(_on_build_preview_updated)
 
 	hero.setup(combat_system, enemies_root, map_view)
@@ -217,8 +220,6 @@ func _get_selectable_at_position(world_position: Vector2) -> Node2D:
 
 
 func _get_world_mouse_position() -> Vector2:
-	if battle_camera != null:
-		return battle_camera.get_global_mouse_position()
 	return get_global_mouse_position()
 
 
@@ -311,9 +312,9 @@ func get_alert_label() -> String:
 
 func get_hint_label() -> String:
 	if is_build_mode_active and selected_unit == builder:
-		return "Left click place | Right click cancel | Extend from the relay or a banner"
+		return "Left click place | Right click cancel | Build anywhere that is free and affordable"
 	if selected_unit == builder:
-		return "Builder selected | Right click move | Use the command deck to build territory"
+		return "Builder selected | Right click move | Use the command deck to build anywhere on the map"
 	if selected_unit == hero:
 		return "Hero selected | Right click move | Kite enemies away from the builder and towers"
 	return "Left click select | Right click move/cancel | Survive the portal waves"
@@ -322,11 +323,11 @@ func get_hint_label() -> String:
 func get_wave_timer_label() -> String:
 	match run_director.current_phase:
 		run_director.BUILD_PHASE:
-			return "Prep | %.0fs" % run_director.get_time_remaining()
+			return "Prepare | Wave %d starts in %.0fs" % [wave_director.get_next_wave_number(), run_director.get_time_remaining()]
 		run_director.REWARD_PHASE:
-			return "Intermission | %.0fs" % run_director.get_time_remaining()
+			return "Intermission | Wave %d starts in %.0fs" % [wave_director.get_next_wave_number(), run_director.get_time_remaining()]
 		run_director.COMBAT_PHASE:
-			return "Combat | Hunt in progress"
+			return "Combat | Wave %d/100 in progress" % wave_director.get_current_wave_number()
 		run_director.GAME_OVER:
 			return "Defeat"
 		run_director.VICTORY:
@@ -351,15 +352,15 @@ func _is_cursor_near_fortress() -> bool:
 
 
 func _enter_build_mode(building_def) -> void:
-	builder.selected_building_def = building_def
-	_update_build_cost_label()
+	if not _is_survival_unit_alive(builder):
+		build_feedback_text = "Builder unavailable"
+		return
 
 	if selected_unit != builder:
-		build_feedback_text = "Select builder first"
-		return
-	if not run_director.can_build():
-		build_feedback_text = "Can only build between portal surges"
-		return
+		_set_selected_unit(builder)
+
+	builder.selected_building_def = building_def
+	_update_build_cost_label()
 
 	is_build_mode_active = true
 	build_feedback_text = "Placing %s" % builder.selected_building_def.display_name
@@ -450,7 +451,7 @@ func _update_contextual_command_panel() -> void:
 
 	if show_builder_commands:
 		command_deck_title_label.text = "Abilities: Builder"
-		command_deck_sub_label.text = "Choose a structure, then place it near the relay or a banner to expand your territory."
+		command_deck_sub_label.text = "Choose a structure, then place it anywhere on the map as long as it is free and you can afford it."
 		_update_build_cost_label()
 		command_hint_label.text = command_hover_text if not command_hover_text.is_empty() else get_hint_label()
 	elif show_fortress_actions:

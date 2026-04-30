@@ -8,16 +8,16 @@ script = ExtResource("1_map")
 [node name="SpawnPoints" type="Node2D" parent="."]
 
 [node name="LeftCenterPortal" type="Marker2D" parent="SpawnPoints"]
-position = Vector2(260, 1080)
+position = Vector2(160, 2048)
 
 [node name="TopCenterPortal" type="Marker2D" parent="SpawnPoints"]
-position = Vector2(1920, 260)
+position = Vector2(2048, 160)
 
 [node name="BottomCenterPortal" type="Marker2D" parent="SpawnPoints"]
-position = Vector2(1920, 1900)
+position = Vector2(2048, 3968)
 
 [node name="RightCenterPortal" type="Marker2D" parent="SpawnPoints"]
-position = Vector2(3580, 1080)
+position = Vector2(3968, 2048)
 
 [node name="TerritoryAnchor" type="Marker2D" parent="."]
-position = Vector2(1920, 1080)
+position = Vector2(2048, 2048)

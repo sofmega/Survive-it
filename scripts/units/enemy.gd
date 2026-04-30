@@ -2,6 +2,8 @@ extends Node2D
 
 signal died(enemy: Node, killer: Node)
 
+const REPATH_DISTANCE_THRESHOLD := 64.0
+
 var enemy_def = null
 var structures_root: Node2D = null
 var combat_system: Node = null
@@ -32,6 +34,11 @@ var last_known_target_position: Vector2 = Vector2.ZERO
 var path_points: Array[Vector2] = []
 var search_index: int = 0
 var detection_radius: float = 300.0
+var last_position: Vector2 = Vector2.ZERO
+var stalled_time: float = 0.0
+var repath_cooldown_remaining: float = 0.0
+var last_navigation_version: int = -1
+var last_path_target_position: Vector2 = Vector2.ZERO
 
 
 func setup(next_enemy_def, next_structures_root: Node2D, next_combat_system: Node, next_hero: Node2D, next_builder: Node2D, next_map_view: Node, next_search_route: Array[Vector2], spawn_entry: Dictionary = {}) -> void:
@@ -59,6 +66,9 @@ func setup(next_enemy_def, next_structures_root: Node2D, next_combat_system: Nod
 	if attack_range > 0.0:
 		detection_radius = maxf(320.0, attack_range * 7.5)
 
+	last_position = global_position
+	last_navigation_version = _get_navigation_version()
+	set_process(true)
 	queue_redraw()
 
 
@@ -72,6 +82,7 @@ func _process(delta: float) -> void:
 
 	attack_cooldown_remaining = maxf(attack_cooldown_remaining - delta, 0.0)
 	special_attack_cooldown_remaining = maxf(special_attack_cooldown_remaining - delta, 0.0)
+	repath_cooldown_remaining = maxf(repath_cooldown_remaining - delta, 0.0)
 	damage_flash_time = maxf(damage_flash_time - delta, 0.0)
 	pulse_flash_time = maxf(pulse_flash_time - delta, 0.0)
 
@@ -85,6 +96,13 @@ func _process(delta: float) -> void:
 		_search(delta)
 	else:
 		_engage_target(delta, current_target)
+
+	var moved_distance: float = global_position.distance_to(last_position)
+	if moved_distance <= 1.0:
+		stalled_time += delta
+	else:
+		stalled_time = 0.0
+	last_position = global_position
 
 
 func receive_damage(amount: float, source: Node) -> void:
@@ -114,19 +132,17 @@ func _choose_target() -> Node2D:
 	var nearest_survivor := _get_nearest_survival_target()
 	if nearest_survivor != null:
 		last_known_target_position = nearest_survivor.global_position
-		var blocking_target := _get_blocking_structure(nearest_survivor)
+		path_points.clear()
+		var blocking_target := _get_route_blocking_structure(nearest_survivor)
 		if blocking_target != null:
 			return blocking_target
-
-		var nearby_structure := _get_nearest_structure(140.0)
-		if preferred_target == &"structures" and nearby_structure != null:
-			return nearby_structure
 
 		return nearest_survivor
 
 	var structure_target := _get_nearest_structure(detection_radius)
 	if structure_target != null:
 		last_known_target_position = structure_target.global_position
+		path_points.clear()
 		return structure_target
 
 	return null
@@ -161,17 +177,17 @@ func _get_nearest_structure(max_range: float) -> Node2D:
 	return nearest_target
 
 
-func _get_blocking_structure(final_target: Node2D) -> Node2D:
-	if structures_root == null or map_view == null:
+func _get_route_blocking_structure(final_target: Node2D) -> Node2D:
+	if structures_root == null or map_view == null or final_target == null:
 		return null
 
-	for structure in structures_root.get_children():
-		if not (structure is Node2D):
-			continue
-		if structure == final_target:
-			continue
-		if map_view.is_structure_blocking_path(structure, global_position, final_target.global_position):
-			return structure
+	if map_view.has_method("get_preferred_blocking_structure"):
+		return map_view.get_preferred_blocking_structure(
+			global_position,
+			final_target.global_position,
+			structures_root,
+			bool(enemy_def.prefers_blocking_structures)
+		)
 
 	return null
 
@@ -213,27 +229,72 @@ func _engage_target(delta: float, target: Node2D) -> void:
 
 
 func _move_toward_position(delta: float, target_position: Vector2) -> void:
-	if map_view != null and map_view.has_method("get_navigation_path"):
-		if path_points.is_empty() or path_points[path_points.size() - 1].distance_to(target_position) > 20.0:
-			path_points = map_view.get_navigation_path(global_position, target_position, enemy_def.radius)
+	if enemy_def == null:
+		return
 
-	if path_points.is_empty():
-		path_points.append(target_position)
+	if _should_repath(target_position):
+		path_points = _request_navigation_path(target_position)
+		stalled_time = 0.0
+		repath_cooldown_remaining = 0.25
+		if path_points.is_empty():
+			path_points.append(target_position)
 
 	var next_point := path_points[0]
 	var direction := next_point - global_position
 	var distance := direction.length()
+	if distance <= 1.0:
+		if path_points.size() > 1:
+			path_points.remove_at(0)
+			next_point = path_points[0]
+			direction = next_point - global_position
+			distance = direction.length()
+		else:
+			return
+
 	var desired_position := next_point
 	if distance > move_speed * slow_multiplier * delta:
 		desired_position = global_position + direction.normalized() * move_speed * slow_multiplier * delta
 
 	if map_view != null and map_view.has_method("resolve_movement"):
-		global_position = map_view.resolve_movement(global_position, desired_position, enemy_def.radius)
+		var resolved_position: Vector2 = map_view.resolve_movement(global_position, desired_position, enemy_def.radius)
+		if resolved_position == global_position and desired_position != global_position:
+			var direct_position: Vector2 = global_position + (target_position - global_position).normalized() * move_speed * slow_multiplier * delta
+			resolved_position = map_view.resolve_movement(global_position, direct_position, enemy_def.radius)
+		global_position = resolved_position
 	else:
 		global_position = desired_position
 
 	if global_position.distance_to(next_point) <= 12.0:
 		path_points.remove_at(0)
+
+
+func _request_navigation_path(target_position: Vector2) -> Array[Vector2]:
+	last_path_target_position = target_position
+	if map_view != null and map_view.has_method("get_navigation_path"):
+		last_navigation_version = _get_navigation_version()
+		return map_view.get_navigation_path(global_position, target_position, enemy_def.radius)
+
+	var direct_path: Array[Vector2] = []
+	direct_path.append(target_position)
+	return direct_path
+
+
+func _should_repath(target_position: Vector2) -> bool:
+	if path_points.is_empty():
+		return true
+	if repath_cooldown_remaining > 0.0:
+		return false
+	if stalled_time >= 0.35:
+		return true
+	if target_position.distance_to(last_path_target_position) >= REPATH_DISTANCE_THRESHOLD:
+		return true
+	return _get_navigation_version() != last_navigation_version
+
+
+func _get_navigation_version() -> int:
+	if map_view != null and map_view.has_method("get_navigation_version"):
+		return map_view.get_navigation_version()
+	return -1
 
 
 func _perform_special_attack() -> void:
@@ -263,7 +324,7 @@ func _get_damage_targets() -> Array[Node2D]:
 	return targets
 
 
-func _is_target_alive(target: Node) -> bool:
+func _is_target_alive(target) -> bool:
 	if target == null or not is_instance_valid(target):
 		return false
 	var candidate_health: Variant = target.get("current_health")

@@ -13,7 +13,7 @@ var heal_flash_time: float = 0.0
 var attack_flash_time: float = 0.0
 
 
-func setup(next_building_def, next_enemies_root: Node2D, next_combat_system: Node, next_fortress: Node2D, next_structures_root: Node2D, next_hero: Node2D) -> void:
+func setup(next_building_def, next_enemies_root: Node2D, next_combat_system: Node, next_fortress: Node2D, next_structures_root: Node2D, next_hero) -> void:
 	building_def = next_building_def
 	enemies_root = next_enemies_root
 	combat_system = next_combat_system
@@ -179,26 +179,30 @@ func _draw() -> void:
 
 	var tint: Color = Color(0.48, 0.41, 0.22)
 	var role: String = "damage"
+	var footprint_tiles: int = 1
 	if building_def != null:
 		tint = building_def.tint
 		role = String(building_def.role)
+		footprint_tiles = maxi(building_def.footprint_size.x, building_def.footprint_size.y)
 	if damage_flash_time > 0.0:
 		tint = tint.lightened(0.28)
 	elif heal_flash_time > 0.0:
 		tint = tint.lightened(0.18)
 
-	draw_rect(Rect2(Vector2(-20, -20), Vector2(40, 40)), tint.darkened(0.25), true)
-	draw_rect(Rect2(Vector2(-16, -16), Vector2(32, 32)), tint, true)
+	var base_extent: float = 20.0 * float(footprint_tiles)
+	var inner_extent: float = base_extent - 4.0
+	draw_rect(Rect2(Vector2(-base_extent, -base_extent), Vector2(base_extent * 2.0, base_extent * 2.0)), tint.darkened(0.25), true)
+	draw_rect(Rect2(Vector2(-inner_extent, -inner_extent), Vector2(inner_extent * 2.0, inner_extent * 2.0)), tint, true)
 	if attack_flash_time > 0.0:
-		draw_arc(Vector2.ZERO, 24.0, 0.0, TAU, 24, Color(1.0, 0.92, 0.64, 0.8), 3.0)
+		draw_arc(Vector2.ZERO, base_extent + 4.0, 0.0, TAU, 24, Color(1.0, 0.92, 0.64, 0.8), 3.0)
 	match role:
 		"damage":
 			draw_circle(Vector2(0, -4), 6.0, Color(0.95, 0.92, 0.82))
 			draw_line(Vector2(0, -4), Vector2(14, -18), Color(0.95, 0.95, 0.95), 3.0)
 		"block":
-			draw_rect(Rect2(Vector2(-14, -10), Vector2(28, 20)), Color(0.45, 0.32, 0.2), true)
-			draw_line(Vector2(-18, -16), Vector2(18, 16), Color(0.82, 0.74, 0.58), 3.0)
-			draw_line(Vector2(-18, 16), Vector2(18, -16), Color(0.82, 0.74, 0.58), 3.0)
+			draw_rect(Rect2(Vector2(-inner_extent + 6.0, -inner_extent * 0.55), Vector2((inner_extent - 6.0) * 2.0, inner_extent * 1.1)), Color(0.45, 0.32, 0.2), true)
+			draw_line(Vector2(-inner_extent, -inner_extent), Vector2(inner_extent, inner_extent), Color(0.82, 0.74, 0.58), 3.0)
+			draw_line(Vector2(-inner_extent, inner_extent), Vector2(inner_extent, -inner_extent), Color(0.82, 0.74, 0.58), 3.0)
 		"slow":
 			draw_circle(Vector2.ZERO, 10.0, Color(0.74, 0.9, 1.0))
 			draw_arc(Vector2.ZERO, 18.0, 0.0, TAU, 24, Color(0.74, 0.9, 1.0, 0.75), 2.0)

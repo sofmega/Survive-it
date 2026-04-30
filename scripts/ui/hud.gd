@@ -45,9 +45,13 @@ func setup(next_run_director: Node, next_wave_director: Node, next_economy_syste
 
 
 func _process(_delta: float) -> void:
+	var displayed_wave_number: int = wave_director.get_current_wave_number()
+	if displayed_wave_number <= 0 and wave_director.has_more_waves():
+		displayed_wave_number = wave_director.get_next_wave_number()
+
 	title_label.text = "Survive it"
 	gold_value_label.text = "Gold %d" % economy_system.current_gold
-	wave_value_label.text = "Wave %d/%d | %d foes" % [wave_director.get_current_wave_number(), wave_director.get_total_waves(), wave_director.active_enemies]
+	wave_value_label.text = "Wave %d/%d | %d foes" % [displayed_wave_number, wave_director.get_total_waves(), wave_director.active_enemies]
 	timer_value_label.text = game_root.get_wave_timer_label()
 	intel_value_label.text = game_root.get_hero_summary_label()
 	threat_value_label.text = game_root.get_builder_summary_label()

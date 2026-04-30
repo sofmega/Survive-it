@@ -6,8 +6,8 @@
 script = ExtResource("1_balance")
 max_waves = 100
 starting_gold = 180
-starting_prep_duration = 22.0
-min_prep_duration = 8.0
+starting_prep_duration = 10.0
+min_prep_duration = 10.0
 prep_duration_decay_per_wave = 0.12
 post_wave_delay = 6.0
 base_enemy_count = 6

@@ -13,6 +13,7 @@ extends Resource
 @export var attack_cooldown: float = 1.0
 @export var gold_reward: int = 5
 @export var preferred_target: StringName = &"survivors"
+@export var prefers_blocking_structures: bool = false
 @export var is_elite: bool = false
 @export var alert_text: String = ""
 @export var special_attack_cooldown: float = 0.0
